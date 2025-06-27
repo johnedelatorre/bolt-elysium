@@ -116,7 +116,7 @@ export const PageBodySubsection = (): JSX.Element => {
     lastUpdated: "Dec 17, 2020"
   }));
 
-  // Checkbox handlers
+  // Checkbox handlers - Fixed functionality
   const handleSelectAll = () => {
     setSelectedAlerts(Array.from({ length: totalAlerts }, (_, i) => i));
   };
@@ -434,7 +434,7 @@ export const PageBodySubsection = (): JSX.Element => {
             {/* Manage Tab */}
             <TabsContent value="manage" className="space-y-6 mt-6">
               {/* Alerts Breakdown Section - Collapsible with Full Checkbox Functionality */}
-              <Accordion type="single" collapsible defaultValue="alerts-breakdown" className="w-full">
+              <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="alerts-breakdown" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
                     <div className="flex items-center justify-between w-full">
@@ -496,11 +496,7 @@ export const PageBodySubsection = (): JSX.Element => {
                               className="h-4 w-4" 
                               checked={isAllSelected}
                               onCheckedChange={handleHeaderCheckbox}
-                              ref={(el) => {
-                                if (el) {
-                                  el.indeterminate = isIndeterminate;
-                                }
-                              }}
+                              {...(isIndeterminate && { 'data-indeterminate': true })}
                             />
                           </div>
                           <div className="col-span-5">DESCRIPTION</div>
@@ -515,8 +511,8 @@ export const PageBodySubsection = (): JSX.Element => {
                           {alertsData.map((alert, index) => (
                             <div
                               key={alert.id}
-                              className={`px-4 py-3 grid grid-cols-12 gap-4 items-center text-sm hover:bg-[#2a2d35] transition-colors duration-200 ${
-                                selectedAlerts.includes(alert.id) ? 'bg-[#2a2d35]' : 'bg-[#1d1e24]'
+                              className={`px-4 py-3 grid grid-cols-12 gap-4 items-center text-sm hover:bg-[#2a2d35] transition-colors duration-200 cursor-pointer ${
+                                selectedAlerts.includes(alert.id) ? 'bg-[#2a2d35] border-l-2 border-l-textprimary-euicolorprimarytext' : 'bg-[#1d1e24]'
                               }`}
                             >
                               <div className="col-span-1">
@@ -603,7 +599,7 @@ export const PageBodySubsection = (): JSX.Element => {
               </Accordion>
 
               {/* Alerts Statistics Section - Collapsible */}
-              <Accordion type="single" collapsible defaultValue="alerts-stats" className="w-full">
+              <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="alerts-stats" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
                     <div className="flex items-center justify-between w-full">
@@ -667,7 +663,7 @@ export const PageBodySubsection = (): JSX.Element => {
               </Accordion>
 
               {/* Bar Chart Section - Collapsible */}
-              <Accordion type="single" collapsible defaultValue="bar-stats" className="w-full">
+              <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="bar-stats" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
                     <div className="flex items-center justify-between w-full">
