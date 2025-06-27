@@ -100,7 +100,7 @@ export const PageSideNavSubsection = (): JSX.Element => {
         flex flex-col bg-[#1d1e24] text-coreempty-euicoloremptyshade
         transition-all duration-300 ease-in-out
         ${isCollapsed ? 'w-16' : 'w-64'}
-        relative min-h-screen h-full
+        relative h-screen
       `}
       role="navigation"
       aria-label="Main navigation"
@@ -127,12 +127,12 @@ export const PageSideNavSubsection = (): JSX.Element => {
         />
       </button>
 
-      <ScrollArea className="flex-1 h-full">
+      <ScrollArea className="flex-1 h-full overflow-hidden">
         <div className={`
-          flex flex-col gap-6 pb-6 transition-all duration-300 min-h-full
+          flex flex-col gap-6 pb-6 transition-all duration-300 h-full
           ${isCollapsed ? 'px-0 pt-16' : 'px-6 pt-3'}
         `}>
-          <div className="flex flex-col gap-4 flex-1">
+          <div className="flex flex-col gap-4 flex-1 h-full">
             {/* Header with logo - positioned below toggle button when collapsed */}
             <div className={`
               flex items-center transition-all duration-300
