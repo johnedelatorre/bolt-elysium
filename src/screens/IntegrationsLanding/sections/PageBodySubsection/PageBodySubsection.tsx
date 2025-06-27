@@ -47,7 +47,7 @@ export const PageBodySubsection = (): JSX.Element => {
     { name: "Web Server", count: 234, selected: false },
   ];
 
-  // Featured integrations at the top
+  // Featured integrations at the top - exactly as shown in design
   const featuredIntegrations = [
     {
       id: 1,
@@ -75,20 +75,37 @@ export const PageBodySubsection = (): JSX.Element => {
     },
   ];
 
-  // Regular integration cards - matching the design pattern
-  const integrations = Array.from({ length: 24 }, (_, i) => {
-    const patterns = [
-      { name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5 },
-      { name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5 },
-      { name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5 },
-    ];
-    const pattern = patterns[i % 3];
-    return {
-      id: i + 4,
-      ...pattern,
-      installed: true,
-    };
-  });
+  // Regular integration cards - matching the exact pattern from design
+  const integrations = [
+    // Row 1
+    { id: 4, name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 5, name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 6, name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    // Row 2
+    { id: 7, name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 8, name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 9, name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    // Row 3
+    { id: 10, name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 11, name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 12, name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    // Row 4
+    { id: 13, name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 14, name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 15, name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    // Row 5
+    { id: 16, name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 17, name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 18, name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    // Row 6
+    { id: 19, name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 20, name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 21, name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    // Row 7
+    { id: 22, name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 23, name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+    { id: 24, name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5, installed: true },
+  ];
 
   // Mock alert data
   const alertsData = Array.from({ length: totalAlerts }, (_, index) => ({
@@ -321,7 +338,7 @@ export const PageBodySubsection = (): JSX.Element => {
                     </div>
                   </div>
 
-                  {/* Featured Integration Cards */}
+                  {/* Featured Integration Cards - Top 3 Large Cards */}
                   <div className="grid grid-cols-3 gap-6 mb-8">
                     {featuredIntegrations.map((integration) => (
                       <div
@@ -350,7 +367,7 @@ export const PageBodySubsection = (): JSX.Element => {
                     ))}
                   </div>
 
-                  {/* Regular Integration Cards Grid */}
+                  {/* Regular Integration Cards Grid - 3 columns, 7 rows */}
                   <div className="grid grid-cols-3 gap-4">
                     {integrations.map((integration) => (
                       <div
