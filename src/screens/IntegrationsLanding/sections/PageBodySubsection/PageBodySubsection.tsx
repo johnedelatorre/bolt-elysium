@@ -213,35 +213,49 @@ export const PageBodySubsection = (): JSX.Element => {
 
   return (
     <div className="flex flex-col flex-1 bg-[#19191a] h-screen overflow-hidden shadow-shadow-bottom-medium">
-      {/* STICKY HEADER - Updated to match design */}
+      {/* STICKY HEADER - Updated to match design with arrow shapes */}
       <header className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 w-full bg-[#19191a] border-b border-[#303030]">
-        {/* Breadcrumb Navigation - Updated to match design */}
-        <nav className="flex items-center space-x-2 text-sm">
-          <button className="px-3 py-1.5 bg-[#69707D] bg-opacity-20 text-[#69707D] rounded hover:bg-opacity-30 transition-colors">
-            Home
-          </button>
+        {/* Breadcrumb Navigation - Updated with arrow shapes */}
+        <nav className="flex items-center text-sm">
+          {/* Home Breadcrumb */}
+          <div className="relative flex items-center">
+            <div className="flex items-center h-6 bg-[#69707D] bg-opacity-20 text-[#69707D] hover:bg-opacity-30 transition-colors">
+              <span className="px-3 py-1.5 text-sm font-normal">Home</span>
+              {/* Arrow shape on the right */}
+              <div className="w-0 h-0 border-l-[12px] border-l-[#69707D] border-l-opacity-20 border-y-[12px] border-y-transparent"></div>
+            </div>
+          </div>
           
-          <svg className="w-4 h-4 text-[#69707D]" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M6 4L10 8L6 12"/>
-          </svg>
+          {/* Configure Breadcrumb */}
+          <div className="relative flex items-center -ml-3">
+            <div className="flex items-center h-6 bg-[#69707D] bg-opacity-20 text-[#69707D] hover:bg-opacity-30 transition-colors">
+              {/* Left arrow cutout */}
+              <div className="w-0 h-0 border-r-[12px] border-r-[#69707D] border-r-opacity-20 border-y-[12px] border-y-transparent"></div>
+              <span className="px-3 py-1.5 text-sm font-normal">Configure</span>
+              {/* Right arrow shape */}
+              <div className="w-0 h-0 border-l-[12px] border-l-[#69707D] border-l-opacity-20 border-y-[12px] border-y-transparent"></div>
+            </div>
+          </div>
           
-          <button className="px-3 py-1.5 bg-[#69707D] bg-opacity-20 text-[#69707D] rounded hover:bg-opacity-30 transition-colors">
-            Configure
-          </button>
+          {/* Integrations Breadcrumb */}
+          <div className="relative flex items-center -ml-3">
+            <div className="flex items-center h-6 bg-[#8EC2FF] bg-opacity-20 text-[#00A8FF] hover:bg-opacity-30 transition-colors">
+              {/* Left arrow cutout */}
+              <div className="w-0 h-0 border-r-[12px] border-r-[#8EC2FF] border-r-opacity-20 border-y-[12px] border-y-transparent"></div>
+              <span className="px-3 py-1.5 text-sm font-medium">Integrations</span>
+              {/* Right arrow shape */}
+              <div className="w-0 h-0 border-l-[12px] border-l-[#8EC2FF] border-l-opacity-20 border-y-[12px] border-y-transparent"></div>
+            </div>
+          </div>
           
-          <svg className="w-4 h-4 text-[#69707D]" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M6 4L10 8L6 12"/>
-          </svg>
-          
-          <button className="px-3 py-1.5 bg-[#8EC2FF] bg-opacity-20 text-[#00A8FF] rounded font-medium">
-            Integrations
-          </button>
-          
-          <svg className="w-4 h-4 text-[#69707D]" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M6 4L10 8L6 12"/>
-          </svg>
-          
-          <span className="text-[#F0F0FF] font-medium">Browse Integrations</span>
+          {/* Browse Integrations - Current page (no arrow) */}
+          <div className="relative flex items-center -ml-3">
+            <div className="flex items-center h-6">
+              {/* Left arrow cutout */}
+              <div className="w-0 h-0 border-r-[12px] border-r-transparent border-y-[12px] border-y-transparent"></div>
+              <span className="px-3 py-1.5 text-sm font-medium text-[#F0F0FF]">Browse Integrations</span>
+            </div>
+          </div>
         </nav>
 
         {/* Save Changes Button */}
