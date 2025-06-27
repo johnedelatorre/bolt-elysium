@@ -133,7 +133,7 @@ export const PageBodySubsection = (): JSX.Element => {
                   </Button>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="px-4 pb-4">
+              <AccordionContent className="p-4">
                 <div className="space-y-4">
                   {/* Selection Info and Actions */}
                   <div className="flex items-center justify-between">
@@ -241,7 +241,7 @@ export const PageBodySubsection = (): JSX.Element => {
                         size="sm"
                         className="text-coreempty-euicoloremptyshade hover:text-white hover:bg-[#2a2d35] px-2 py-1 h-auto"
                       >
-                        &lt;
+                        <
                       </Button>
                       {[1, 15, 16, 17, 18, 19, 20].map((page, index) => (
                         <Button
@@ -262,7 +262,7 @@ export const PageBodySubsection = (): JSX.Element => {
                         size="sm"
                         className="text-coreempty-euicoloremptyshade hover:text-white hover:bg-[#2a2d35] px-2 py-1 h-auto"
                       >
-                        &gt;
+                        >
                       </Button>
                     </div>
                   </div>
@@ -286,7 +286,7 @@ export const PageBodySubsection = (): JSX.Element => {
                   </Button>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="px-4 pb-4">
+              <AccordionContent className="p-4">
                 <div className="space-y-6">
                   {/* Statistics Header */}
                   <div className="flex items-center justify-between">
@@ -350,7 +350,7 @@ export const PageBodySubsection = (): JSX.Element => {
                   </Button>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="px-4 pb-4">
+              <AccordionContent className="p-4">
                 <div className="space-y-6">
                   {/* Statistics Header */}
                   <div className="flex items-center justify-between">
