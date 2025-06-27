@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
@@ -9,52 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { LineChart } from "../../../../components/charts/LineChart";
 import { BarChart } from "../../../../components/charts/BarChart";
 
-// Mock data for alerts
-const alertsData = [
-  { id: 1, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 2, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 3, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 4, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Metrics", lastUpdated: "Dec 17, 2020" },
-  { id: 5, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 6, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 7, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 8, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 9, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-  { id: 10, description: "Analyze mock web traffic log data for Elastic's website", status: "Installed", category: "Security Data Analytics", lastUpdated: "Dec 17, 2020" },
-];
-
 export const PageBodySubsection = (): JSX.Element => {
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
-
-  // Handle individual row selection
-  const handleRowSelect = (rowId: number, checked: boolean) => {
-    if (checked) {
-      setSelectedRows(prev => [...prev, rowId]);
-    } else {
-      setSelectedRows(prev => prev.filter(id => id !== rowId));
-    }
-  };
-
-  // Handle select all
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedRows(alertsData.map(alert => alert.id));
-    } else {
-      setSelectedRows([]);
-    }
-  };
-
-  // Check if all rows are selected
-  const isAllSelected = selectedRows.length === alertsData.length && alertsData.length > 0;
-  
-  // Check if some but not all rows are selected (indeterminate state)
-  const isIndeterminate = selectedRows.length > 0 && selectedRows.length < alertsData.length;
-
-  // Clear selection
-  const clearSelection = () => {
-    setSelectedRows([]);
-  };
-
   // Line chart data
   const lineChartData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -136,61 +91,19 @@ export const PageBodySubsection = (): JSX.Element => {
                 value="manage" 
                 className="data-[state=active]:bg-[#19191a] data-[state=active]:text-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade"
               >
-                Manage integrations
+                Manage
               </TabsTrigger>
             </TabsList>
 
             {/* Browse Integrations Tab */}
             <TabsContent value="browse" className="space-y-6 mt-6">
-              {/* Search and Filter Section */}
-              <div className="flex items-center gap-4">
-                <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    placeholder="Search integrations..."
-                    className="w-full px-4 py-2 bg-[#2a2d35] border border-[#404040] rounded-md text-coreempty-euicoloremptyshade placeholder-text-subdued-euitextsubduedcolor focus:outline-none focus:ring-2 focus:ring-textprimary-euicolorprimarytext focus:border-transparent"
-                  />
-                  <svg className="absolute right-3 top-2.5 w-5 h-5 text-text-subdued-euitextsubduedcolor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-                <Button variant="outline" className="border-[#404040] text-coreempty-euicoloremptyshade hover:bg-[#2a2d35]">
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
-                  </svg>
-                  Filter
-                </Button>
-              </div>
-
-              {/* Integration Categories */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[
-                  { name: "AWS", description: "Amazon Web Services integrations", count: 45, color: "bg-orange-500" },
-                  { name: "Azure", description: "Microsoft Azure integrations", count: 32, color: "bg-blue-500" },
-                  { name: "Google Cloud", description: "Google Cloud Platform integrations", count: 28, color: "bg-green-500" },
-                  { name: "Kubernetes", description: "Container orchestration monitoring", count: 15, color: "bg-purple-500" },
-                  { name: "Docker", description: "Container monitoring and logging", count: 12, color: "bg-cyan-500" },
-                  { name: "Nginx", description: "Web server monitoring", count: 8, color: "bg-green-600" },
-                ].map((category) => (
-                  <div key={category.name} className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg p-4 hover:border-textprimary-euicolorprimarytext transition-colors cursor-pointer">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className={`w-8 h-8 ${category.color} rounded-md flex items-center justify-center text-white font-bold text-sm`}>
-                        {category.name.charAt(0)}
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-coreempty-euicoloremptyshade">{category.name}</h3>
-                        <Badge variant="secondary" className="text-xs bg-[#2a2d35] text-text-subdued-euitextsubduedcolor">
-                          {category.count} integrations
-                        </Badge>
-                      </div>
-                    </div>
-                    <p className="text-sm text-text-subdued-euitextsubduedcolor">{category.description}</p>
-                  </div>
-                ))}
+              <div className="text-center py-12">
+                <h3 className="text-lg font-medium text-coreempty-euicoloremptyshade mb-2">Browse Integrations</h3>
+                <p className="text-text-subdued-euitextsubduedcolor">Content for browsing integrations will be displayed here.</p>
               </div>
             </TabsContent>
 
-            {/* Manage Integrations Tab */}
+            {/* Manage Tab */}
             <TabsContent value="manage" className="space-y-6 mt-6">
               {/* Alerts Breakdown Section */}
               <Accordion type="single" collapsible defaultValue="alerts-breakdown" className="w-full">
@@ -207,48 +120,28 @@ export const PageBodySubsection = (): JSX.Element => {
                       </Button>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="p-4">
+                  <AccordionContent className="px-4 pb-4">
                     <div className="space-y-4">
-                      {/* Selection Info and Actions */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-textprimary-euicolorprimarytext">
-                            Showing 1-10 of 15
-                          </span>
-                          <span className="text-coreempty-euicoloremptyshade">Dashboards</span>
-                          <span className="text-textprimary-euicolorprimarytext">
-                            {selectedRows.length} Selected
-                          </span>
-                          {selectedRows.length > 0 && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={clearSelection}
-                              className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal underline"
-                            >
-                              Clear selection
-                            </Button>
-                          )}
-                        </div>
+                      {/* Selection Info */}
+                      <div className="flex items-center gap-4 text-sm">
+                        <span className="text-textprimary-euicolorprimarytext">Showing 1-10 of 15</span>
+                        <span className="text-coreempty-euicoloremptyshade">Dashboards</span>
+                        <span className="text-textprimary-euicolorprimarytext">3 Selected</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal underline"
+                        >
+                          Clear selection
+                        </Button>
                       </div>
 
                       {/* Data Table */}
                       <div className="border border-[#2a2d35] rounded-lg overflow-hidden">
                         {/* Table Header */}
                         <div className="bg-[#2a2d35] px-4 py-3 grid grid-cols-12 gap-4 items-center text-sm font-medium text-coreempty-euicoloremptyshade">
-                          <div className="col-span-1 flex items-center">
-                            <div className="relative">
-                              <Checkbox
-                                checked={isAllSelected}
-                                onCheckedChange={handleSelectAll}
-                                className="h-5 w-5 border-2 border-corelight-euicolorlightshade data-[state=checked]:bg-textprimary-euicolorprimarytext data-[state=checked]:border-textprimary-euicolorprimarytext data-[state=checked]:text-white"
-                              />
-                              {isIndeterminate && !isAllSelected && (
-                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                  <div className="w-2.5 h-0.5 bg-textprimary-euicolorprimarytext rounded-full"></div>
-                                </div>
-                              )}
-                            </div>
+                          <div className="col-span-1">
+                            <Checkbox className="h-4 w-4" />
                           </div>
                           <div className="col-span-5">DESCRIPTION</div>
                           <div className="col-span-2">STATUS</div>
@@ -259,34 +152,33 @@ export const PageBodySubsection = (): JSX.Element => {
 
                         {/* Table Body */}
                         <div className="divide-y divide-[#2a2d35]">
-                          {alertsData.map((alert) => (
+                          {Array.from({ length: 10 }).map((_, index) => (
                             <div
-                              key={alert.id}
+                              key={index}
                               className={`px-4 py-3 grid grid-cols-12 gap-4 items-center text-sm hover:bg-[#2a2d35] transition-colors duration-200 ${
-                                selectedRows.includes(alert.id) ? 'bg-[#2a2d35]' : 'bg-[#1d1e24]'
+                                index < 3 ? 'bg-[#2a2d35]' : 'bg-[#1d1e24]'
                               }`}
                             >
-                              <div className="col-span-1 flex items-center">
-                                <Checkbox
-                                  checked={selectedRows.includes(alert.id)}
-                                  onCheckedChange={(checked) => handleRowSelect(alert.id, checked as boolean)}
-                                  className="h-5 w-5 border-2 border-corelight-euicolorlightshade data-[state=checked]:bg-textprimary-euicolorprimarytext data-[state=checked]:border-textprimary-euicolorprimarytext data-[state=checked]:text-white"
+                              <div className="col-span-1">
+                                <Checkbox 
+                                  className="h-4 w-4" 
+                                  defaultChecked={index < 3}
                                 />
                               </div>
                               <div className="col-span-5 text-coreempty-euicoloremptyshade">
-                                {alert.description}
+                                Analyze mock web traffic log data for Elastic's website
                               </div>
                               <div className="col-span-2">
                                 <div className="flex items-center gap-2">
                                   <div className="w-2 h-2 bg-coresuccess-euicolorsuccess rounded-full"></div>
-                                  <span className="text-coreempty-euicoloremptyshade">{alert.status}</span>
+                                  <span className="text-coreempty-euicoloremptyshade">Installed</span>
                                 </div>
                               </div>
                               <div className="col-span-2 text-coreempty-euicoloremptyshade">
-                                {alert.category}
+                                {index < 3 ? 'Security Data Analytics' : index === 3 ? 'Metrics' : index === 4 ? 'Analytics' : 'Security Data Analytics'}
                               </div>
                               <div className="col-span-1 text-coreempty-euicoloremptyshade">
-                                {alert.lastUpdated}
+                                Dec 17, 2020
                               </div>
                               <div className="col-span-1">
                                 <Button
@@ -319,9 +211,9 @@ export const PageBodySubsection = (): JSX.Element => {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                             </svg>
                           </Button>
-                          {[1, 15, 16, 17, 18, 19, 20].map((page, index) => (
+                          {[1, '...', 15, 16, 17, 18, 19, 20].map((page, index) => (
                             <Button
-                              key={page}
+                              key={index}
                               variant="ghost"
                               size="sm"
                               className={`px-2 py-1 h-auto text-sm ${
@@ -330,7 +222,7 @@ export const PageBodySubsection = (): JSX.Element => {
                                   : 'text-coreempty-euicoloremptyshade hover:text-white hover:bg-[#2a2d35]'
                               }`}
                             >
-                              {index === 1 ? '...' : page}
+                              {page}
                             </Button>
                           ))}
                           <Button
@@ -364,7 +256,7 @@ export const PageBodySubsection = (): JSX.Element => {
                       </Button>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="p-4">
+                  <AccordionContent className="px-4 pb-4">
                     <div className="space-y-6">
                       {/* Statistics Header */}
                       <div className="flex items-center justify-between">
@@ -428,7 +320,7 @@ export const PageBodySubsection = (): JSX.Element => {
                       </Button>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="p-4">
+                  <AccordionContent className="px-4 pb-4">
                     <div className="space-y-6">
                       {/* Statistics Header */}
                       <div className="flex items-center justify-between">
