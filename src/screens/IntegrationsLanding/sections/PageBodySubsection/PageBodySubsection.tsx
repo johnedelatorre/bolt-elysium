@@ -163,16 +163,18 @@ export const PageBodySubsection = (): JSX.Element => {
                     {/* Table Header */}
                     <div className="bg-[#2a2d35] px-4 py-3 grid grid-cols-12 gap-4 items-center text-sm font-medium text-coreempty-euicoloremptyshade">
                       <div className="col-span-1 flex items-center">
-                        <Checkbox
-                          checked={isAllSelected}
-                          onCheckedChange={handleSelectAll}
-                          className="data-[state=checked]:bg-textprimary-euicolorprimarytext data-[state=checked]:border-textprimary-euicolorprimarytext"
-                          ref={(ref) => {
-                            if (ref) {
-                              ref.indeterminate = isIndeterminate;
-                            }
-                          }}
-                        />
+                        <div className="relative">
+                          <Checkbox
+                            checked={isAllSelected}
+                            onCheckedChange={handleSelectAll}
+                            className="h-5 w-5"
+                          />
+                          {isIndeterminate && !isAllSelected && (
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                              <div className="w-2.5 h-0.5 bg-textprimary-euicolorprimarytext rounded-full"></div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <div className="col-span-5">DESCRIPTION</div>
                       <div className="col-span-2">STATUS</div>
@@ -194,7 +196,7 @@ export const PageBodySubsection = (): JSX.Element => {
                             <Checkbox
                               checked={selectedRows.includes(alert.id)}
                               onCheckedChange={(checked) => handleRowSelect(alert.id, checked as boolean)}
-                              className="data-[state=checked]:bg-textprimary-euicolorprimarytext data-[state=checked]:border-textprimary-euicolorprimarytext"
+                              className="h-5 w-5"
                             />
                           </div>
                           <div className="col-span-5 text-coreempty-euicoloremptyshade">
