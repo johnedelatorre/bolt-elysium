@@ -12,6 +12,10 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from "../../../../com
 export const PageBodySubsection = (): JSX.Element => {
   const [isInstalledToggled, setIsInstalledToggled] = useState(false);
   const [activeTab, setActiveTab] = useState("browse");
+  const [alertsBreakdownExpanded, setAlertsBreakdownExpanded] = useState(true);
+  const [alertsAnalyticsExpanded, setAlertsAnalyticsExpanded] = useState(true);
+  const [selectedRows, setSelectedRows] = useState<number[]>([1, 2, 3]);
+  const [selectAll, setSelectAll] = useState(false);
 
   // Featured integrations data
   const featuredIntegrations = [
@@ -96,7 +100,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: true
     },
     {
       id: 2,
@@ -104,7 +107,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: true
     },
     {
       id: 3,
@@ -112,7 +114,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: true
     },
     {
       id: 4,
@@ -120,7 +121,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Metrics",
       lastUpdated: "Dec 17, 2020",
-      selected: false
     },
     {
       id: 5,
@@ -128,7 +128,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: false
     },
     {
       id: 6,
@@ -136,7 +135,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: false
     },
     {
       id: 7,
@@ -144,7 +142,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: false
     },
     {
       id: 8,
@@ -152,7 +149,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: false
     },
     {
       id: 9,
@@ -160,7 +156,6 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: false
     },
     {
       id: 10,
@@ -168,19 +163,40 @@ export const PageBodySubsection = (): JSX.Element => {
       status: "Installed",
       category: "Security Data Analytics",
       lastUpdated: "Dec 17, 2020",
-      selected: false
     }
   ];
 
   const chartData = [
-    { day: 'Mon', value: 1000 },
-    { day: 'Tue', value: 3000 },
-    { day: 'Wed', value: 8000 },
-    { day: 'Thu', value: 2500 },
-    { day: 'Fri', value: 1000 },
-    { day: 'Sat', value: 8500 },
-    { day: 'Sun', value: 3000 }
+    { day: 'Mon', value: 1000, x: 80 },
+    { day: 'Tue', value: 3000, x: 186 },
+    { day: 'Wed', value: 8000, x: 293 },
+    { day: 'Thu', value: 2500, x: 400 },
+    { day: 'Fri', value: 1000, x: 506 },
+    { day: 'Sat', value: 8500, x: 613 },
+    { day: 'Sun', value: 3000, x: 720 }
   ];
+
+  const handleRowSelect = (id: number) => {
+    setSelectedRows(prev => 
+      prev.includes(id) 
+        ? prev.filter(rowId => rowId !== id)
+        : [...prev, id]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedRows([]);
+    } else {
+      setSelectedRows(alertsData.map(alert => alert.id));
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const clearSelection = () => {
+    setSelectedRows([]);
+    setSelectAll(false);
+  };
 
   return (
     <div className="flex flex-col flex-1 bg-[#19191a] h-screen overflow-hidden shadow-shadow-bottom-medium">
@@ -531,11 +547,20 @@ export const PageBodySubsection = (): JSX.Element => {
         {activeTab === "manage" && (
           <div className="flex flex-col gap-6 p-6 w-full">
             {/* Alerts Breakdown Section */}
-            <div className="bg-[#23262b] rounded-lg border border-[#303030]">
-              {/* Section Header */}
-              <div className="flex items-center justify-between p-4 border-b border-[#303030]">
+            <div className="bg-[#2a2d35] rounded-lg">
+              {/* Section Header - Collapsible */}
+              <div 
+                className="flex items-center justify-between p-4 cursor-pointer hover:bg-[#323539] transition-colors"
+                onClick={() => setAlertsBreakdownExpanded(!alertsBreakdownExpanded)}
+              >
                 <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
+                  <svg 
+                    className={`w-4 h-4 text-text-disabled-euicolordisabledtext transition-transform duration-200 ${
+                      alertsBreakdownExpanded ? 'rotate-0' : '-rotate-90'
+                    }`} 
+                    viewBox="0 0 16 16" 
+                    fill="currentColor"
+                  >
                     <path d="M8 12L3 7L4.5 5.5L8 9L11.5 5.5L13 7L8 12Z"/>
                   </svg>
                   <h3 className="text-panelplain font-medium text-sm">Alerts Breakdown</h3>
@@ -545,120 +570,145 @@ export const PageBodySubsection = (): JSX.Element => {
                 </button>
               </div>
 
-              {/* Table Controls */}
-              <div className="flex items-center justify-between p-4 border-b border-[#303030]">
-                <div className="flex items-center gap-4 text-sm text-text-disabled-euicolordisabledtext">
-                  <span>Showing 1-10 of 15 Dashboards</span>
-                  <span>3 Selected</span>
-                  <span className="text-[#ff6b6b]">Clear selection</span>
-                </div>
-              </div>
-
-              {/* Data Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-[#2a2d35]">
-                    <tr className="border-b border-[#303030]">
-                      <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider w-8">
-                        <Checkbox className="w-4 h-4" />
-                      </th>
-                      <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
-                        Description
-                      </th>
-                      <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
-                        Last updated
-                      </th>
-                      <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#303030]">
-                    {alertsData.map((alert) => (
-                      <tr key={alert.id} className="hover:bg-[#2a2d35] transition-colors">
-                        <td className="p-3">
-                          <Checkbox 
-                            className="w-4 h-4" 
-                            checked={alert.selected}
-                          />
-                        </td>
-                        <td className="p-3 text-sm text-panelplain max-w-xs">
-                          {alert.description}
-                        </td>
-                        <td className="p-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span className="text-sm text-panelplain">{alert.status}</span>
-                          </div>
-                        </td>
-                        <td className="p-3 text-sm text-panelplain">
-                          {alert.category}
-                        </td>
-                        <td className="p-3 text-sm text-panelplain">
-                          {alert.lastUpdated}
-                        </td>
-                        <td className="p-3">
-                          <div className="flex items-center gap-2">
-                            <button className="text-text-disabled-euicolordisabledtext hover:text-panelplain">
-                              <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M8 3C4.5 3 1.73 5.11 1 8C1.73 10.89 4.5 13 8 13C11.5 13 14.27 10.89 15 8C14.27 5.11 11.5 3 8 3ZM8 11C6.34 11 5 9.66 5 8C5 6.34 6.34 5 8 5C9.66 5 11 6.34 11 8C11 9.66 9.66 11 8 11ZM8 6.5C7.17 6.5 6.5 7.17 6.5 8C6.5 8.83 7.17 9.5 8 9.5C8.83 9.5 9.5 8.83 9.5 8C9.5 7.17 8.83 6.5 8 6.5Z"/>
-                              </svg>
-                            </button>
-                            <button className="text-text-disabled-euicolordisabledtext hover:text-panelplain">
-                              <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M2 11H14V13H2V11ZM2 7H14V9H2V7ZM2 3H14V5H2V3Z"/>
-                              </svg>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Pagination */}
-              <div className="flex items-center justify-between p-4 border-t border-[#303030]">
-                <div className="text-sm text-text-disabled-euicolordisabledtext">
-                  Rows per page: 10
-                </div>
-                <div className="flex items-center gap-2">
-                  <button className="p-1 text-text-disabled-euicolordisabledtext hover:text-panelplain">
-                    <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M10 12L5 8L10 4V12Z"/>
-                    </svg>
-                  </button>
-                  <div className="flex items-center gap-1">
-                    <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">1</button>
-                    <span className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext">...</span>
-                    <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">15</button>
-                    <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">16</button>
-                    <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">17</button>
-                    <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">18</button>
-                    <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">19</button>
-                    <button className="px-2 py-1 text-sm bg-[#0071c2] text-white rounded">20</button>
+              {/* Collapsible Content */}
+              {alertsBreakdownExpanded && (
+                <>
+                  {/* Table Controls */}
+                  <div className="flex items-center justify-between px-4 py-3 bg-[#323539] text-sm">
+                    <div className="flex items-center gap-4 text-text-disabled-euicolordisabledtext">
+                      <span className="text-[#0071c2]">Showing 1-10 of 15</span>
+                      <span className="text-[#0071c2]">Dashboards</span>
+                      <span className="text-[#0071c2]">{selectedRows.length} Selected</span>
+                      <button 
+                        className="text-[#ff6b6b] hover:underline"
+                        onClick={clearSelection}
+                      >
+                        Clear selection
+                      </button>
+                    </div>
                   </div>
-                  <button className="p-1 text-text-disabled-euicolordisabledtext hover:text-panelplain">
-                    <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M6 4L11 8L6 12V4Z"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
+
+                  {/* Data Table */}
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-[#323539]">
+                        <tr>
+                          <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider w-8">
+                            <Checkbox 
+                              className="w-4 h-4" 
+                              checked={selectAll}
+                              onChange={handleSelectAll}
+                            />
+                          </th>
+                          <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
+                            Description
+                          </th>
+                          <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
+                            Category
+                          </th>
+                          <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
+                            Last updated
+                          </th>
+                          <th className="text-left p-3 text-xs font-medium text-text-disabled-euicolordisabledtext uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-[#2a2d35] divide-y divide-[#404040]">
+                        {alertsData.map((alert) => (
+                          <tr key={alert.id} className="hover:bg-[#323539] transition-colors">
+                            <td className="p-3">
+                              <Checkbox 
+                                className="w-4 h-4" 
+                                checked={selectedRows.includes(alert.id)}
+                                onChange={() => handleRowSelect(alert.id)}
+                              />
+                            </td>
+                            <td className="p-3 text-sm text-panelplain max-w-xs">
+                              {alert.description}
+                            </td>
+                            <td className="p-3">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span className="text-sm text-panelplain">{alert.status}</span>
+                              </div>
+                            </td>
+                            <td className="p-3 text-sm text-panelplain">
+                              {alert.category}
+                            </td>
+                            <td className="p-3 text-sm text-panelplain">
+                              {alert.lastUpdated}
+                            </td>
+                            <td className="p-3">
+                              <div className="flex items-center gap-2">
+                                <button className="text-text-disabled-euicolordisabledtext hover:text-panelplain">
+                                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M8 3C4.5 3 1.73 5.11 1 8C1.73 10.89 4.5 13 8 13C11.5 13 14.27 10.89 15 8C14.27 5.11 11.5 3 8 3ZM8 11C6.34 11 5 9.66 5 8C5 6.34 6.34 5 8 5C9.66 5 11 6.34 11 8C11 9.66 9.66 11 8 11ZM8 6.5C7.17 6.5 6.5 7.17 6.5 8C6.5 8.83 7.17 9.5 8 9.5C8.83 9.5 9.5 8.83 9.5 8C9.5 7.17 8.83 6.5 8 6.5Z"/>
+                                  </svg>
+                                </button>
+                                <button className="text-text-disabled-euicolordisabledtext hover:text-panelplain">
+                                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M8 4C8.55 4 9 3.55 9 3C9 2.45 8.55 2 8 2C7.45 2 7 2.45 7 3C7 3.55 7.45 4 8 4ZM8 6C7.45 6 7 6.45 7 7C7 7.55 7.45 8 8 8C8.55 8 9 7.55 9 7C9 6.45 8.55 6 8 6ZM8 10C7.45 10 7 10.45 7 11C7 11.55 7.45 12 8 12C8.55 12 9 11.55 9 11C9 10.45 8.55 10 8 10Z"/>
+                                  </svg>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Pagination */}
+                  <div className="flex items-center justify-between p-4 bg-[#323539]">
+                    <div className="text-sm text-text-disabled-euicolordisabledtext">
+                      Rows per page: 10
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button className="p-1 text-text-disabled-euicolordisabledtext hover:text-panelplain">
+                        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M10 12L5 8L10 4V12Z"/>
+                        </svg>
+                      </button>
+                      <div className="flex items-center gap-1">
+                        <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">1</button>
+                        <span className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext">...</span>
+                        <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">15</button>
+                        <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">16</button>
+                        <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">17</button>
+                        <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">18</button>
+                        <button className="px-2 py-1 text-sm text-text-disabled-euicolordisabledtext hover:text-panelplain">19</button>
+                        <button className="px-2 py-1 text-sm bg-[#0071c2] text-white rounded">20</button>
+                      </div>
+                      <button className="p-1 text-text-disabled-euicolordisabledtext hover:text-panelplain">
+                        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M6 4L11 8L6 12V4Z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Alerts Analytics Section */}
-            <div className="bg-[#23262b] rounded-lg border border-[#303030]">
-              {/* Section Header */}
-              <div className="flex items-center justify-between p-4 border-b border-[#303030]">
+            <div className="bg-[#2a2d35] rounded-lg">
+              {/* Section Header - Collapsible */}
+              <div 
+                className="flex items-center justify-between p-4 cursor-pointer hover:bg-[#323539] transition-colors"
+                onClick={() => setAlertsAnalyticsExpanded(!alertsAnalyticsExpanded)}
+              >
                 <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
+                  <svg 
+                    className={`w-4 h-4 text-text-disabled-euicolordisabledtext transition-transform duration-200 ${
+                      alertsAnalyticsExpanded ? 'rotate-0' : '-rotate-90'
+                    }`} 
+                    viewBox="0 0 16 16" 
+                    fill="currentColor"
+                  >
                     <path d="M8 12L3 7L4.5 5.5L8 9L11.5 5.5L13 7L8 12Z"/>
                   </svg>
                   <h3 className="text-panelplain font-medium text-sm">Alerts Analytics</h3>
@@ -668,25 +718,25 @@ export const PageBodySubsection = (): JSX.Element => {
                 </button>
               </div>
 
-              {/* Statistics and Chart */}
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h4 className="text-panelplain font-medium text-lg">Statistics</h4>
-                  <div className="flex items-center gap-2 bg-[#2a2d35] rounded px-3 py-1">
-                    <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M3 2V14H13V12H5V2H3ZM7 6V10H9V6H7ZM11 4V10H13V4H11Z"/>
-                    </svg>
-                    <span className="text-sm text-panelplain">14 Aug - 29 Aug</span>
-                    <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M4 6L8 10L12 6H4Z"/>
-                    </svg>
+              {/* Collapsible Content */}
+              {alertsAnalyticsExpanded && (
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h4 className="text-panelplain font-medium text-lg">Statistics</h4>
+                    <div className="flex items-center gap-2 bg-[#1a1d23] border border-[#404040] rounded px-3 py-1">
+                      <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M3 2V14H13V12H5V2H3ZM7 6V10H9V6H7ZM11 4V10H13V4H11Z"/>
+                      </svg>
+                      <span className="text-sm text-panelplain">14 Aug - 29 Aug</span>
+                      <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M4 6L8 10L12 6H4Z"/>
+                      </svg>
+                    </div>
                   </div>
-                </div>
 
-                {/* Key Metrics */}
-                <div className="grid grid-cols-2 gap-8 mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2">
+                  {/* Key Metrics */}
+                  <div className="grid grid-cols-2 gap-8 mb-8">
+                    <div className="flex items-center gap-3">
                       <svg className="w-4 h-4 text-green-500" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 2L10 6H14L11 9L12 14L8 11L4 14L5 9L2 6H6L8 2Z"/>
                       </svg>
@@ -695,9 +745,7 @@ export const PageBodySubsection = (): JSX.Element => {
                         <div className="text-sm text-text-disabled-euicolordisabledtext">Income</div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <svg className="w-4 h-4 text-red-500" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 14L6 10H2L5 7L4 2L8 5L12 2L11 7L14 10H10L8 14Z"/>
                       </svg>
@@ -707,79 +755,89 @@ export const PageBodySubsection = (): JSX.Element => {
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Chart */}
-                <div className="relative h-80 bg-[#1a1d23] rounded-lg p-4">
-                  <svg className="w-full h-full" viewBox="0 0 800 300">
-                    {/* Grid lines */}
-                    <defs>
-                      <pattern id="grid" width="80" height="60" patternUnits="userSpaceOnUse">
-                        <path d="M 80 0 L 0 0 0 60" fill="none" stroke="#303030" strokeWidth="1"/>
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
-                    
-                    {/* Y-axis labels */}
-                    <text x="20" y="50" fill="#666" fontSize="12">10K</text>
-                    <text x="20" y="110" fill="#666" fontSize="12">5K</text>
-                    <text x="20" y="170" fill="#666" fontSize="12">2K</text>
-                    <text x="20" y="230" fill="#666" fontSize="12">1K</text>
-                    <text x="20" y="290" fill="#666" fontSize="12">0</text>
+                  {/* Chart Container - Full Width */}
+                  <div className="relative w-full h-96 bg-[#1a1d23] rounded-lg p-6">
+                    <svg className="w-full h-full" viewBox="0 0 900 350" preserveAspectRatio="xMidYMid meet">
+                      {/* Grid lines */}
+                      <defs>
+                        <pattern id="grid" width="90" height="70" patternUnits="userSpaceOnUse">
+                          <path d="M 90 0 L 0 0 0 70" fill="none" stroke="#404040" strokeWidth="0.5"/>
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#grid)" />
+                      
+                      {/* Y-axis labels */}
+                      <text x="30" y="60" fill="#666" fontSize="12">10K</text>
+                      <text x="35" y="120" fill="#666" fontSize="12">5K</text>
+                      <text x="35" y="180" fill="#666" fontSize="12">2K</text>
+                      <text x="35" y="240" fill="#666" fontSize="12">1K</text>
+                      <text x="45" y="300" fill="#666" fontSize="12">0</text>
 
-                    {/* Chart line */}
-                    <path
-                      d="M 80 250 Q 160 200 240 150 Q 320 100 400 180 Q 480 260 560 200 Q 640 140 720 120"
-                      fill="none"
-                      stroke="#0071c2"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                    />
+                      {/* Chart area background */}
+                      <rect x="60" y="40" width="800" height="260" fill="rgba(26, 29, 35, 0.5)" />
 
-                    {/* Data points */}
-                    {chartData.map((point, index) => {
-                      const x = 80 + (index * 106.67);
-                      const y = 290 - (point.value / 10000) * 240;
-                      return (
-                        <g key={index}>
-                          <circle cx={x} cy={y} r="4" fill="#0071c2" />
-                          {/* Tooltip on hover */}
-                          <g className="opacity-0 hover:opacity-100 transition-opacity">
-                            <rect x={x - 30} y={y - 40} width="60" height="25" fill="#2a2d35" rx="4" />
-                            <text x={x} y={y - 25} fill="#fff" fontSize="10" textAnchor="middle">
-                              {point.value}
-                            </text>
-                            <text x={x} y={y - 15} fill="#0071c2" fontSize="8" textAnchor="middle">
-                              23 August, 2021
-                            </text>
+                      {/* Chart line with smooth curve */}
+                      <path
+                        d="M 100 280 Q 180 240 260 180 Q 340 120 420 200 Q 500 280 580 200 Q 660 120 740 140 Q 800 160 840 180"
+                        fill="none"
+                        stroke="#0071c2"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                      />
+
+                      {/* Data points */}
+                      {chartData.map((point, index) => {
+                        const x = 100 + (index * 123.33);
+                        const y = 300 - (point.value / 10000) * 260;
+                        return (
+                          <g key={index}>
+                            <circle cx={x} cy={y} r="5" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
+                            {/* Hover tooltip */}
+                            {index === 3 && (
+                              <g>
+                                <rect x={x - 40} y={y - 50} width="80" height="35" fill="#2a2d35" rx="4" stroke="#404040" />
+                                <text x={x} y={y - 35} fill="#0071c2" fontSize="12" textAnchor="middle" fontWeight="bold">
+                                  2,500
+                                </text>
+                                <text x={x} y={y - 22} fill="#ff6b6b" fontSize="12" textAnchor="middle" fontWeight="bold">
+                                  1,200
+                                </text>
+                                <text x={x} y={y - 8} fill="#666" fontSize="10" textAnchor="middle">
+                                  23 August, 2021
+                                </text>
+                                {/* Vertical dashed line */}
+                                <line x1={x} y1={y} x2={x} y2="320" stroke="#666" strokeWidth="1" strokeDasharray="3,3" />
+                              </g>
+                            )}
                           </g>
-                        </g>
-                      );
-                    })}
+                        );
+                      })}
 
-                    {/* X-axis labels */}
-                    <text x="80" y="315" fill="#666" fontSize="12" textAnchor="middle">Mon</text>
-                    <text x="186" y="315" fill="#666" fontSize="12" textAnchor="middle">Tue</text>
-                    <text x="293" y="315" fill="#666" fontSize="12" textAnchor="middle">Wed</text>
-                    <text x="400" y="315" fill="#666" fontSize="12" textAnchor="middle">Thu</text>
-                    <text x="506" y="315" fill="#666" fontSize="12" textAnchor="middle">Fri</text>
-                    <text x="613" y="315" fill="#666" fontSize="12" textAnchor="middle">Sat</text>
-                    <text x="720" y="315" fill="#666" fontSize="12" textAnchor="middle">Sun</text>
-                  </svg>
+                      {/* X-axis labels */}
+                      <text x="100" y="335" fill="#666" fontSize="12" textAnchor="middle">Mon</text>
+                      <text x="223" y="335" fill="#666" fontSize="12" textAnchor="middle">Tue</text>
+                      <text x="346" y="335" fill="#666" fontSize="12" textAnchor="middle">Wed</text>
+                      <text x="469" y="335" fill="#666" fontSize="12" textAnchor="middle">Thu</text>
+                      <text x="592" y="335" fill="#666" fontSize="12" textAnchor="middle">Fri</text>
+                      <text x="715" y="335" fill="#666" fontSize="12" textAnchor="middle">Sat</text>
+                      <text x="838" y="335" fill="#666" fontSize="12" textAnchor="middle">Sun</text>
+                    </svg>
 
-                  {/* Legend */}
-                  <div className="absolute top-4 right-4 flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-panelplain">2,500</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <span className="text-sm text-panelplain">1,200</span>
+                    {/* Legend - positioned in top right */}
+                    <div className="absolute top-6 right-6 flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span className="text-sm text-panelplain font-medium">2,500</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <span className="text-sm text-panelplain font-medium">1,200</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}
