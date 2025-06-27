@@ -120,7 +120,7 @@ export const PageBodySubsection = (): JSX.Element => {
                       </Button>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4">
+                  <AccordionContent className="p-4">
                     <div className="space-y-4">
                       {/* Selection Info */}
                       <div className="flex items-center gap-4 text-sm">
@@ -256,7 +256,7 @@ export const PageBodySubsection = (): JSX.Element => {
                       </Button>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4">
+                  <AccordionContent className="p-4">
                     <div className="space-y-6">
                       {/* Statistics Header */}
                       <div className="flex items-center justify-between">
@@ -320,7 +320,7 @@ export const PageBodySubsection = (): JSX.Element => {
                       </Button>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4">
+                  <AccordionContent className="p-4">
                     <div className="space-y-6">
                       {/* Statistics Header */}
                       <div className="flex items-center justify-between">
