@@ -7,6 +7,9 @@ import { Checkbox } from "../../../../components/ui/checkbox";
 import { Input } from "../../../../components/ui/input";
 import { Separator } from "../../../../components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from "../../../../components/ui/breadcrumb";
+import { LineChart } from "../../../../components/charts/LineChart";
+import { BarChart } from "../../../../components/charts/BarChart";
 
 export const PageBodySubsection = (): JSX.Element => {
   const [isInstalledToggled, setIsInstalledToggled] = useState(false);
@@ -166,29 +169,35 @@ export const PageBodySubsection = (): JSX.Element => {
     }
   ];
 
-  // Line chart data
-  const lineChartData = [
-    { day: 'Mon', value: 1000, x: 80, y: 280 },
-    { day: 'Tue', value: 3000, x: 180, y: 200 },
-    { day: 'Wed', value: 8000, x: 280, y: 80 },
-    { day: 'Thu', value: 2500, x: 380, y: 220 },
-    { day: 'Fri', value: 1000, x: 480, y: 280 },
-    { day: 'Sat', value: 8500, x: 580, y: 70 },
-    { day: 'Sun', value: 3000, x: 680, y: 200 }
-  ];
+  // Chart.js data for line chart
+  const lineChartData = {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [
+      {
+        label: 'Income',
+        data: [1000, 3000, 8000, 2500, 1000, 8500, 3000],
+        borderColor: '#0071c2',
+        backgroundColor: '#0071c2',
+      }
+    ]
+  };
 
-  // Bar chart data
-  const barChartData = [
-    { day: '14', income: 200, expense: 150 },
-    { day: '15', income: 120, expense: 140 },
-    { day: '16', income: 250, expense: 130 },
-    { day: '17', income: 200, expense: 60 },
-    { day: '18', income: 220, expense: 140 },
-    { day: '19', income: 180, expense: 150 },
-    { day: '20', income: 80, expense: 400 },
-    { day: '21', income: 240, expense: 100 },
-    { day: '22', income: 300, expense: 200 }
-  ];
+  // Chart.js data for bar chart
+  const barChartData = {
+    labels: ['14', '15', '16', '17', '18', '19', '20', '21', '22'],
+    datasets: [
+      {
+        label: 'Income',
+        data: [200, 120, 250, 200, 220, 180, 80, 240, 300],
+        backgroundColor: '#0071c2',
+      },
+      {
+        label: 'Expense',
+        data: [150, 140, 130, 60, 140, 150, 400, 100, 200],
+        backgroundColor: '#ff8c42',
+      }
+    ]
+  };
 
   const handleRowSelect = (id: number) => {
     setSelectedRows(prev => 
@@ -215,9 +224,9 @@ export const PageBodySubsection = (): JSX.Element => {
   return (
     <div className="flex flex-col flex-1 bg-[#19191a] h-screen overflow-hidden shadow-shadow-bottom-medium">
       {/* STICKY HEADER - Only this section is sticky */}
-      <header className="sticky top-0 z-10 flex items-center justify-between p-2 w-full bg-[#19191a] shadow-shadow-bottom-small h-12">
-        {/* Custom Breadcrumb SVG */}
-        <div className="flex items-center h-full">
+      <header className="sticky top-0 z-10 flex items-center justify-between p-2 w-full bg-[#19191a] shadow-shadow-bottom-small">
+        {/* Replace breadcrumb with SVG */}
+        <div className="inline-flex items-center">
           <svg width="219" height="24" viewBox="0 0 219 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clipPath="url(#clip0_4294_59755)">
               <rect width="41" height="24" fill="#69707D" fillOpacity="0.2"/>
@@ -242,7 +251,7 @@ export const PageBodySubsection = (): JSX.Element => {
 
         <Button
           variant="default"
-          className="h-8 bg-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade rounded px-3 py-0 flex items-center"
+          className="flex items-center px-3 py-0 bg-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade rounded"
         >
           <div className="w-4 h-4 mr-2">
             <img
@@ -434,7 +443,7 @@ export const PageBodySubsection = (): JSX.Element => {
               {/* Main content area with integration cards */}
               <div className="flex flex-col flex-1">
                 {/* Search and filter controls */}
-                <div className="flex items-center gap-4 pb-5">
+                <div className="flex items-center gap-4 pb-5 h-10">
                   <div className="relative flex-1 h-10">
                     <Input
                       className="h-10 bg-[#252526] border-[#1322951a] rounded-md pl-10"
@@ -443,7 +452,7 @@ export const PageBodySubsection = (): JSX.Element => {
                     <SearchIcon className="absolute left-3 top-3 w-4 h-4 text-text-disabled-euicolordisabledtext" />
                   </div>
 
-                  <div className="flex items-center bg-[#252526] rounded-md border border-solid border-[#1322951a]">
+                  <div className="flex items-center bg-[#252526] rounded-md border border-solid border-[#1322951a] h-10">
                     <div className="flex items-center gap-2 px-2 py-0 bg-[#252526] shadow-filter-button-border-right">
                       <div className="w-4 h-4">
                         <img
@@ -784,98 +793,10 @@ export const PageBodySubsection = (): JSX.Element => {
                     </div>
                   </div>
 
-                  {/* Line Chart Container - Auto-fit width */}
-                  <div className="relative w-full h-80 bg-[#1a1d23] rounded-lg overflow-hidden">
-                    <svg 
-                      className="absolute inset-0 w-full h-full" 
-                      viewBox="0 0 1000 320" 
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      {/* Background */}
-                      <rect width="1000" height="320" fill="#1a1d23" />
-                      
-                      {/* Grid lines - vertical */}
-                      <g stroke="#404040" strokeWidth="1" opacity="0.3">
-                        {[100, 200, 300, 400, 500, 600, 700, 800, 900].map((x, i) => (
-                          <line key={i} x1={x} y1="40" x2={x} y2="280" />
-                        ))}
-                      </g>
-                      
-                      {/* Grid lines - horizontal */}
-                      <g stroke="#404040" strokeWidth="1" opacity="0.3">
-                        {[80, 120, 160, 200, 240, 280].map((y, i) => (
-                          <line key={i} x1="100" y1={y} x2="900" y2={y} />
-                        ))}
-                      </g>
-
-                      {/* Y-axis labels */}
-                      <g fill="#666" fontSize="12" textAnchor="end">
-                        <text x="95" y="85">10K</text>
-                        <text x="95" y="125">5K</text>
-                        <text x="95" y="165">2K</text>
-                        <text x="95" y="205">1K</text>
-                        <text x="95" y="285">0</text>
-                      </g>
-
-                      {/* Chart line - smooth curve */}
-                      <path
-                        d="M 100 240 Q 150 220 200 160 Q 250 100 300 120 Q 400 140 500 180 Q 600 220 700 240 Q 750 260 800 100 Q 850 80 900 160"
-                        fill="none"
-                        stroke="#0071c2"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-
-                      {/* Data points */}
-                      <circle cx="100" cy="240" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
-                      <circle cx="200" cy="160" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
-                      <circle cx="300" cy="120" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
-                      <circle cx="500" cy="180" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
-                      <circle cx="700" cy="240" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
-                      <circle cx="800" cy="100" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
-                      <circle cx="900" cy="160" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
-
-                      {/* Tooltip on Thursday point */}
-                      <g>
-                        <rect 
-                          x="420" 
-                          y="120" 
-                          width="120" 
-                          height="60" 
-                          fill="#2a2d35" 
-                          rx="4" 
-                          stroke="#404040" 
-                          strokeWidth="1" 
-                        />
-                        
-                        <text x="480" y="138" fill="#0071c2" fontSize="14" textAnchor="middle" fontWeight="bold">2,500</text>
-                        <text x="480" y="155" fill="#ff6b6b" fontSize="14" textAnchor="middle" fontWeight="bold">1,200</text>
-                        <text x="480" y="170" fill="#666" fontSize="12" textAnchor="middle">23 August, 2021</text>
-                        
-                        <line 
-                          x1="500" 
-                          y1="180" 
-                          x2="500" 
-                          y2="280" 
-                          stroke="#666" 
-                          strokeWidth="1" 
-                          strokeDasharray="4,4" 
-                        />
-                      </g>
-
-                      {/* X-axis labels */}
-                      <g fill="#666" fontSize="12" textAnchor="middle">
-                        <text x="100" y="305">Mon</text>
-                        <text x="200" y="305">Tue</text>
-                        <text x="300" y="305">Wed</text>
-                        <text x="500" y="305">Thu</text>
-                        <text x="700" y="305">Fri</text>
-                        <text x="800" y="305">Sat</text>
-                        <text x="900" y="305">Sun</text>
-                      </g>
-                    </svg>
-
+                  {/* Chart.js Line Chart */}
+                  <div className="relative w-full bg-[#1a1d23] rounded-lg p-4">
+                    <LineChart data={lineChartData} height={280} />
+                    
                     {/* Legend - positioned in top right */}
                     <div className="absolute top-4 right-4 flex items-center gap-4 bg-[#2a2d35] px-3 py-2 rounded border border-[#404040]">
                       <div className="flex items-center gap-2">
@@ -946,88 +867,9 @@ export const PageBodySubsection = (): JSX.Element => {
                     </div>
                   </div>
 
-                  {/* Bar Chart Container - Auto-fit width */}
-                  <div className="relative w-full h-80 bg-[#1a1d23] rounded-lg overflow-hidden">
-                    <svg 
-                      className="absolute inset-0 w-full h-full" 
-                      viewBox="0 0 1000 320" 
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      {/* Background */}
-                      <rect width="1000" height="320" fill="#1a1d23" />
-                      
-                      {/* Grid lines - horizontal */}
-                      <g stroke="#404040" strokeWidth="1" opacity="0.3">
-                        {[60, 120, 180, 240, 280].map((y, i) => (
-                          <line key={i} x1="80" y1={y} x2="920" y2={y} />
-                        ))}
-                      </g>
-
-                      {/* Y-axis labels */}
-                      <g fill="#666" fontSize="12" textAnchor="end">
-                        <text x="75" y="65">500</text>
-                        <text x="75" y="125">400</text>
-                        <text x="75" y="185">300</text>
-                        <text x="75" y="245">200</text>
-                        <text x="75" y="285">0</text>
-                      </g>
-
-                      {/* Bar Chart Data */}
-                      {barChartData.map((data, i) => {
-                        const x = 120 + (i * 90);
-                        const incomeHeight = (data.income / 500) * 220;
-                        const expenseHeight = (data.expense / 500) * 220;
-                        const barWidth = 30;
-                        
-                        return (
-                          <g key={i}>
-                            {/* Income bar (blue) */}
-                            <rect
-                              x={x - 15}
-                              y={280 - incomeHeight}
-                              width={barWidth}
-                              height={incomeHeight}
-                              fill="#0071c2"
-                              rx="2"
-                            />
-                            {/* Expense bar (orange) */}
-                            <rect
-                              x={x - 15}
-                              y={280 - incomeHeight - expenseHeight}
-                              width={barWidth}
-                              height={expenseHeight}
-                              fill="#ff8c42"
-                              rx="2"
-                            />
-                          </g>
-                        );
-                      })}
-
-                      {/* Tooltip on day 16 */}
-                      <g>
-                        <rect 
-                          x="240" 
-                          y="80" 
-                          width="120" 
-                          height="60" 
-                          fill="#2a2d35" 
-                          rx="4" 
-                          stroke="#404040" 
-                          strokeWidth="1" 
-                        />
-                        
-                        <text x="300" y="98" fill="#0071c2" fontSize="14" textAnchor="middle" fontWeight="bold">2,500</text>
-                        <text x="300" y="115" fill="#ff8c42" fontSize="14" textAnchor="middle" fontWeight="bold">1,200</text>
-                        <text x="300" y="130" fill="#666" fontSize="12" textAnchor="middle">23 August, 2021</text>
-                      </g>
-
-                      {/* X-axis labels */}
-                      <g fill="#666" fontSize="12" textAnchor="middle">
-                        {barChartData.map((data, i) => (
-                          <text key={i} x={120 + (i * 90)} y="305">{data.day}</text>
-                        ))}
-                      </g>
-                    </svg>
+                  {/* Chart.js Bar Chart */}
+                  <div className="relative w-full bg-[#1a1d23] rounded-lg p-4">
+                    <BarChart data={barChartData} height={280} />
                   </div>
                 </div>
               )}
