@@ -213,8 +213,7 @@ export const PageBodySubsection = (): JSX.Element => {
                     <div key={index} className="relative w-[200px] h-8">
                       <div className="relative h-8">
                         <Badge
-                          className={`absolute top-1.5 ${category.isSelected ? "bg-coreprimary-euicolorprimary text-coreempty-euicoloremptyshade" : "bg-corelight-euicolorlightshade text-coreprimary-euicolorprimary"} px-1.5 py-0.5 rounded-[3px]`}
-                          style={{ right: category.isSelected ? "36px" : "20px" }}
+                          className={`absolute top-1.5 right-0 ${category.isSelected ? "bg-coreprimary-euicolorprimary text-coreempty-euicoloremptyshade" : "bg-corelight-euicolorlightshade text-coreprimary-euicolorprimary"} px-1.5 py-0.5 rounded-[3px]`}
                         >
                           {category.count}
                         </Badge>
