@@ -14,7 +14,7 @@ export const PageBodySubsection = (): JSX.Element => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showInstalled, setShowInstalled] = useState(false);
 
-  // Integration categories with counts
+  // Integration categories with counts - matching the design exactly
   const categories = [
     { name: "All Categories", count: 300 },
     { name: "AWS", count: 50 },
@@ -42,46 +42,49 @@ export const PageBodySubsection = (): JSX.Element => {
     { name: "Web Server", count: 234 },
   ];
 
-  // Sample integration data
-  const integrations = [
+  // Featured integrations at the top
+  const featuredIntegrations = [
     {
       id: 1,
-      name: "AWS EC2",
-      description: "Collect logs from 1Password with Elastic Agent.",
-      icon: "🔶",
-      category: "AWS",
-      installed: true,
-      installCount: 5,
+      name: "Web Crawler",
+      description: "Add search to your website with the Enterprise Search Web Crawler",
+      icon: "🌐",
+      category: "Enterprise Search",
+      featured: true,
     },
     {
       id: 2,
-      name: "Amazon Cloud",
-      description: "Collect logs from 1Password with Elastic Agent.",
-      icon: "☁️",
-      category: "Cloud",
-      installed: true,
-      installCount: 5,
+      name: "Elysium APM",
+      description: "Monitor detect and diagnose complex application performance issues",
+      icon: "📊",
+      category: "Monitoring",
+      featured: true,
     },
     {
       id: 3,
-      name: "Microsoft",
-      description: "Collect logs from 1Password with Elastic Agent.",
-      icon: "🪟",
-      category: "Microsoft 365",
-      installed: true,
-      installCount: 5,
+      name: "Endpoint and Cloud Security",
+      description: "Protect your hosts and cloud workloads with threat prevention, detection and deep security data visibility",
+      icon: "🛡️",
+      category: "Security",
+      featured: true,
     },
-    // Repeat pattern for more integrations
-    ...Array.from({ length: 21 }, (_, i) => ({
+  ];
+
+  // Regular integration cards - matching the design pattern
+  const integrations = Array.from({ length: 24 }, (_, i) => {
+    const patterns = [
+      { name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent." },
+      { name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent." },
+      { name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent." },
+    ];
+    const pattern = patterns[i % 3];
+    return {
       id: i + 4,
-      name: i % 3 === 0 ? "AWS EC2" : i % 3 === 1 ? "Amazon Cloud" : "Microsoft",
-      description: "Collect logs from 1Password with Elastic Agent.",
-      icon: i % 3 === 0 ? "🔶" : i % 3 === 1 ? "☁️" : "🪟",
-      category: i % 3 === 0 ? "AWS" : i % 3 === 1 ? "Cloud" : "Microsoft 365",
+      ...pattern,
       installed: true,
       installCount: 5,
-    })),
-  ];
+    };
+  });
 
   // Line chart data
   const lineChartData = {
@@ -120,16 +123,18 @@ export const PageBodySubsection = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col flex-1 bg-[#19191a] h-screen overflow-hidden shadow-shadow-bottom-medium">
-      {/* Header */}
+    <div className="flex flex-col flex-1 bg-[#19191a] h-screen overflow-hidden">
+      {/* Header with Breadcrumbs */}
       <div className="flex items-center justify-between px-6 py-4 bg-[#19191a] border-b border-[#2a2d35]">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-coreempty-euicoloremptyshade font-s-paragraph-regular">Home</span>
-            <span className="text-corelight-euicolorlightshade">/</span>
-            <span className="text-coreempty-euicoloremptyshade font-s-paragraph-regular">Configure</span>
-            <span className="text-corelight-euicolorlightshade">/</span>
-            <span className="text-textprimary-euicolorprimarytext font-s-paragraph-bold">Integrations</span>
+        <div className="flex items-center gap-2">
+          {/* Breadcrumb Pills */}
+          <div className="flex items-center gap-1">
+            <span className="bg-[#2a2d35] text-textprimary-euicolorprimarytext px-2 py-1 rounded text-xs font-medium">
+              Integrations
+            </span>
+            <span className="bg-textprimary-euicolorprimarytext text-white px-2 py-1 rounded text-xs font-medium">
+              Browse Integrations
+            </span>
           </div>
         </div>
         <Button 
@@ -146,11 +151,11 @@ export const PageBodySubsection = (): JSX.Element => {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         <div className="flex flex-col gap-6 p-6 w-full">
-          {/* Page Title */}
-          <div className="flex items-center justify-between">
+          {/* Page Title and Description */}
+          <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-coreempty-euicoloremptyshade">Integrations</h1>
-              <p className="text-text-subdued-euitextsubduedcolor mt-1">
+              <h1 className="text-3xl font-bold text-coreempty-euicoloremptyshade mb-2">Integrations</h1>
+              <p className="text-text-subdued-euitextsubduedcolor">
                 Choose an integration to start collecting and analyzing your data.
               </p>
             </div>
@@ -158,71 +163,75 @@ export const PageBodySubsection = (): JSX.Element => {
 
           {/* Tabs */}
           <Tabs defaultValue="browse" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-[#2a2d35] rounded-lg p-1">
+            <TabsList className="bg-transparent border-b border-[#2a2d35] rounded-none p-0 h-auto">
               <TabsTrigger 
                 value="browse" 
-                className="data-[state=active]:bg-[#19191a] data-[state=active]:text-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade"
+                className="bg-transparent border-b-2 border-transparent data-[state=active]:border-textprimary-euicolorprimarytext data-[state=active]:bg-transparent data-[state=active]:text-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade rounded-none px-4 py-3 font-medium"
               >
-                Browse integrations
+                Browse Integrations
               </TabsTrigger>
               <TabsTrigger 
                 value="manage" 
-                className="data-[state=active]:bg-[#19191a] data-[state=active]:text-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade"
+                className="bg-transparent border-b-2 border-transparent data-[state=active]:border-textprimary-euicolorprimarytext data-[state=active]:bg-transparent data-[state=active]:text-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade rounded-none px-4 py-3 font-medium"
               >
                 Manage
               </TabsTrigger>
             </TabsList>
 
             {/* Browse Integrations Tab */}
-            <TabsContent value="browse" className="space-y-6 mt-6">
+            <TabsContent value="browse" className="mt-6">
               <div className="flex gap-6">
                 {/* Left Sidebar - Categories */}
-                <div className="w-80 flex-shrink-0">
-                  <div className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg p-4">
-                    <h3 className="text-coreempty-euicoloremptyshade font-s-paragraph-bold mb-4">Categories</h3>
-                    <ScrollArea className="h-96">
-                      <div className="space-y-1">
-                        {categories.map((category) => (
-                          <div
-                            key={category.name}
-                            className="flex items-center justify-between py-2 px-2 hover:bg-[#2a2d35] rounded cursor-pointer transition-colors duration-200"
-                          >
-                            <span className="text-coreempty-euicoloremptyshade text-sm">
-                              {category.name}
-                            </span>
-                            <Badge variant="secondary" className="bg-[#2a2d35] text-coreempty-euicoloremptyshade text-xs">
-                              {category.count}
-                            </Badge>
-                          </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
+                <div className="w-72 flex-shrink-0">
+                  <div className="space-y-4">
+                    {/* Search */}
+                    <div className="relative">
+                      <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-subdued-euitextsubduedcolor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      <input
+                        type="text"
+                        placeholder="Search Dashboards"
+                        className="w-full pl-10 pr-4 py-2 bg-[#2a2d35] border border-[#404040] rounded-md text-coreempty-euicoloremptyshade placeholder-text-subdued-euitextsubduedcolor focus:outline-none focus:ring-2 focus:ring-textprimary-euicolorprimarytext focus:border-transparent"
+                      />
+                    </div>
+
+                    {/* Categories List */}
+                    <div className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg">
+                      <ScrollArea className="h-96">
+                        <div className="p-4 space-y-1">
+                          {categories.map((category, index) => (
+                            <div
+                              key={category.name}
+                              className={`flex items-center justify-between py-2 px-2 hover:bg-[#2a2d35] rounded cursor-pointer transition-colors duration-200 ${
+                                index === 0 ? 'bg-[#2a2d35] text-textprimary-euicolorprimarytext' : ''
+                              }`}
+                            >
+                              <span className={`text-sm ${index === 0 ? 'text-textprimary-euicolorprimarytext font-medium' : 'text-coreempty-euicoloremptyshade'}`}>
+                                {category.name}
+                              </span>
+                              <Badge variant="secondary" className="bg-[#404040] text-coreempty-euicoloremptyshade text-xs border-0">
+                                {category.count}
+                              </Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    </div>
                   </div>
                 </div>
 
                 {/* Right Content Area */}
                 <div className="flex-1">
-                  {/* Search and Filters */}
+                  {/* Top Controls */}
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-subdued-euitextsubduedcolor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <input
-                          type="text"
-                          placeholder="Search Dashboards"
-                          className="pl-10 pr-4 py-2 bg-[#2a2d35] border border-[#404040] rounded-md text-coreempty-euicoloremptyshade placeholder-text-subdued-euitextsubduedcolor focus:outline-none focus:ring-2 focus:ring-textprimary-euicolorprimarytext focus:border-transparent w-80"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
                       {/* View Toggle */}
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 bg-[#2a2d35] rounded-md p-1">
                         <Button
                           variant="ghost"
                           size="sm"
-                          className={`p-2 h-8 w-8 ${viewMode === 'grid' ? 'bg-[#2a2d35] text-textprimary-euicolorprimarytext' : 'text-coreempty-euicoloremptyshade hover:bg-[#2a2d35]'}`}
+                          className={`p-2 h-8 w-8 rounded ${viewMode === 'grid' ? 'bg-[#404040] text-textprimary-euicolorprimarytext' : 'text-coreempty-euicoloremptyshade hover:bg-[#404040]'}`}
                           onClick={() => setViewMode('grid')}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +244,7 @@ export const PageBodySubsection = (): JSX.Element => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className={`p-2 h-8 w-8 ${viewMode === 'list' ? 'bg-[#2a2d35] text-textprimary-euicolorprimarytext' : 'text-coreempty-euicoloremptyshade hover:bg-[#2a2d35]'}`}
+                          className={`p-2 h-8 w-8 rounded ${viewMode === 'list' ? 'bg-[#404040] text-textprimary-euicolorprimarytext' : 'text-coreempty-euicoloremptyshade hover:bg-[#404040]'}`}
                           onClick={() => setViewMode('list')}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -248,6 +257,8 @@ export const PageBodySubsection = (): JSX.Element => {
                           </svg>
                         </Button>
                       </div>
+                    </div>
+                    <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
                         <Checkbox 
                           id="installed"
@@ -262,28 +273,55 @@ export const PageBodySubsection = (): JSX.Element => {
                     </div>
                   </div>
 
-                  {/* Integration Cards Grid */}
+                  {/* Featured Integration Cards */}
+                  <div className="grid grid-cols-3 gap-4 mb-8">
+                    {featuredIntegrations.map((integration) => (
+                      <div
+                        key={integration.id}
+                        className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg p-6 hover:border-[#404040] transition-colors duration-200 cursor-pointer"
+                      >
+                        <div className="flex flex-col items-center text-center space-y-4">
+                          <div className="w-16 h-16 bg-[#2a2d35] rounded-lg flex items-center justify-center text-2xl">
+                            {integration.icon}
+                          </div>
+                          <div>
+                            <h4 className="text-coreempty-euicoloremptyshade font-bold text-lg mb-2">
+                              {integration.name}
+                            </h4>
+                            <p className="text-text-subdued-euitextsubduedcolor text-sm leading-relaxed">
+                              {integration.description}
+                            </p>
+                          </div>
+                          <Button
+                            className="bg-textprimary-euicolorprimarytext hover:bg-blue-600 text-white px-6 py-2 h-9 text-sm font-medium rounded-md transition-colors duration-200 w-full"
+                          >
+                            Select
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Regular Integration Cards Grid */}
                   <div className="grid grid-cols-3 gap-4">
                     {integrations.map((integration) => (
                       <div
                         key={integration.id}
                         className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg p-4 hover:border-[#404040] transition-colors duration-200 cursor-pointer"
                       >
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-[#2a2d35] rounded-lg flex items-center justify-center text-lg">
-                              {integration.icon}
-                            </div>
-                            <div>
-                              <h4 className="text-coreempty-euicoloremptyshade font-s-paragraph-bold">
-                                {integration.name}
-                              </h4>
-                            </div>
+                        <div className="flex items-start gap-3 mb-3">
+                          <div className="w-10 h-10 bg-[#2a2d35] rounded-lg flex items-center justify-center text-lg flex-shrink-0">
+                            {integration.icon}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-coreempty-euicoloremptyshade font-bold text-sm mb-1">
+                              {integration.name}
+                            </h4>
+                            <p className="text-text-subdued-euitextsubduedcolor text-xs leading-relaxed">
+                              {integration.description}
+                            </p>
                           </div>
                         </div>
-                        <p className="text-text-subdued-euitextsubduedcolor text-sm mb-4 line-clamp-2">
-                          {integration.description}
-                        </p>
                         <div className="flex items-center justify-between">
                           <Button
                             size="sm"
@@ -304,12 +342,12 @@ export const PageBodySubsection = (): JSX.Element => {
                     ))}
                   </div>
 
-                  {/* Load More / Pagination */}
+                  {/* Bottom Legend */}
                   <div className="mt-8 text-center">
                     <p className="text-text-subdued-euitextsubduedcolor text-sm mb-4">
                       If an integration is available for <span className="text-textprimary-euicolorprimarytext">show:</span>
                     </p>
-                    <div className="flex items-center justify-center gap-4 text-sm">
+                    <div className="flex items-center justify-center gap-6 text-sm">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-coresuccess-euicolorsuccess rounded-full"></div>
                         <span className="text-coreempty-euicoloremptyshade">Recommended</span>
@@ -330,7 +368,7 @@ export const PageBodySubsection = (): JSX.Element => {
 
             {/* Manage Tab */}
             <TabsContent value="manage" className="space-y-6 mt-6">
-              {/* Alerts Breakdown Section */}
+              {/* Alerts Breakdown Section - Collapsible */}
               <Accordion type="single" collapsible defaultValue="alerts-breakdown" className="w-full">
                 <AccordionItem value="alerts-breakdown" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
@@ -466,7 +504,7 @@ export const PageBodySubsection = (): JSX.Element => {
                 </AccordionItem>
               </Accordion>
 
-              {/* Alerts Statistics Section */}
+              {/* Alerts Statistics Section - Collapsible */}
               <Accordion type="single" collapsible defaultValue="alerts-stats" className="w-full">
                 <AccordionItem value="alerts-stats" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
@@ -530,7 +568,7 @@ export const PageBodySubsection = (): JSX.Element => {
                 </AccordionItem>
               </Accordion>
 
-              {/* Bar Chart Section */}
+              {/* Bar Chart Section - Collapsible */}
               <Accordion type="single" collapsible defaultValue="bar-stats" className="w-full">
                 <AccordionItem value="bar-stats" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
