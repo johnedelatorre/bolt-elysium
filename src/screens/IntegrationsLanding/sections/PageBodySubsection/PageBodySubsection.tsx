@@ -241,7 +241,9 @@ export const PageBodySubsection = (): JSX.Element => {
                         size="sm"
                         className="text-coreempty-euicoloremptyshade hover:text-white hover:bg-[#2a2d35] px-2 py-1 h-auto"
                       >
-                        <
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
                       </Button>
                       {[1, 15, 16, 17, 18, 19, 20].map((page, index) => (
                         <Button
@@ -262,7 +264,9 @@ export const PageBodySubsection = (): JSX.Element => {
                         size="sm"
                         className="text-coreempty-euicoloremptyshade hover:text-white hover:bg-[#2a2d35] px-2 py-1 h-auto"
                       >
-                        >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </Button>
                     </div>
                   </div>
