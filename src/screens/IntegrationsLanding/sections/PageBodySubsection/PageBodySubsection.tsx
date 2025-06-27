@@ -8,6 +8,7 @@ import { ScrollArea } from "../../../../components/ui/scroll-area";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../../components/ui/accordion";
 import { LineChart } from "../../../../components/charts/LineChart";
 import { BarChart } from "../../../../components/charts/BarChart";
+import { ChevronDownIcon } from "../../../../components/icons/NavigationIcons";
 
 export const PageBodySubsection = (): JSX.Element => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['All Categories']);
@@ -18,6 +19,13 @@ export const PageBodySubsection = (): JSX.Element => {
   // Checkbox functionality for alerts breakdown
   const [selectedAlerts, setSelectedAlerts] = useState<number[]>([0, 1, 2]); // Initially select first 3
   const totalAlerts = 10;
+
+  // Accordion state for manage sections
+  const [expandedSections, setExpandedSections] = useState<string[]>([
+    'alerts-breakdown', 
+    'alerts-stats', 
+    'bar-stats'
+  ]);
 
   // Integration categories with counts - matching the design exactly
   const categories = [
@@ -147,6 +155,15 @@ export const PageBodySubsection = (): JSX.Element => {
 
   const isAllSelected = selectedAlerts.length === totalAlerts;
   const isIndeterminate = selectedAlerts.length > 0 && selectedAlerts.length < totalAlerts;
+
+  // Accordion toggle handler
+  const toggleAccordionSection = (sectionId: string) => {
+    setExpandedSections(prev => 
+      prev.includes(sectionId) 
+        ? prev.filter(id => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
 
   // Line chart data
   const lineChartData = {
@@ -434,21 +451,30 @@ export const PageBodySubsection = (): JSX.Element => {
             {/* Manage Tab */}
             <TabsContent value="manage" className="space-y-6 mt-6">
               {/* Alerts Breakdown Section - Collapsible with Full Checkbox Functionality */}
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="alerts-breakdown" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
-                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-coreempty-euicoloremptyshade font-s-paragraph-bold">Alerts Breakdown</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal"
-                      >
-                        Show alerts
-                      </Button>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="p-4">
+              <div className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
+                <div 
+                  className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-[#2a2d35] transition-colors duration-200"
+                  onClick={() => toggleAccordionSection('alerts-breakdown')}
+                >
+                  <div className="flex items-center gap-3">
+                    <ChevronDownIcon 
+                      className="w-4 h-4 text-coreempty-euicoloremptyshade transition-transform duration-200" 
+                      isExpanded={expandedSections.includes('alerts-breakdown')}
+                    />
+                    <span className="text-coreempty-euicoloremptyshade font-s-paragraph-bold">Alerts Breakdown</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Show alerts
+                  </Button>
+                </div>
+                
+                {expandedSections.includes('alerts-breakdown') && (
+                  <div className="p-4 border-t border-[#2a2d35]">
                     <div className="space-y-4">
                       {/* Selection Info and Controls */}
                       <div className="flex items-center justify-between">
@@ -594,26 +620,35 @@ export const PageBodySubsection = (): JSX.Element => {
                         </div>
                       </div>
                     </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+                  </div>
+                )}
+              </div>
 
               {/* Alerts Statistics Section - Collapsible */}
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="alerts-stats" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
-                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-coreempty-euicoloremptyshade font-s-paragraph-bold">Alerts</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal"
-                      >
-                        Show alerts
-                      </Button>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="p-4">
+              <div className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
+                <div 
+                  className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-[#2a2d35] transition-colors duration-200"
+                  onClick={() => toggleAccordionSection('alerts-stats')}
+                >
+                  <div className="flex items-center gap-3">
+                    <ChevronDownIcon 
+                      className="w-4 h-4 text-coreempty-euicoloremptyshade transition-transform duration-200" 
+                      isExpanded={expandedSections.includes('alerts-stats')}
+                    />
+                    <span className="text-coreempty-euicoloremptyshade font-s-paragraph-bold">Alerts</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Show alerts
+                  </Button>
+                </div>
+                
+                {expandedSections.includes('alerts-stats') && (
+                  <div className="p-4 border-t border-[#2a2d35]">
                     <div className="space-y-6">
                       {/* Statistics Header */}
                       <div className="flex items-center justify-between">
@@ -658,26 +693,35 @@ export const PageBodySubsection = (): JSX.Element => {
                         <LineChart data={lineChartData} height={300} />
                       </div>
                     </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+                  </div>
+                )}
+              </div>
 
               {/* Bar Chart Section - Collapsible */}
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="bar-stats" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
-                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-coreempty-euicoloremptyshade font-s-paragraph-bold">Alerts</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal"
-                      >
-                        Show alerts
-                      </Button>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="p-4">
+              <div className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
+                <div 
+                  className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-[#2a2d35] transition-colors duration-200"
+                  onClick={() => toggleAccordionSection('bar-stats')}
+                >
+                  <div className="flex items-center gap-3">
+                    <ChevronDownIcon 
+                      className="w-4 h-4 text-coreempty-euicoloremptyshade transition-transform duration-200" 
+                      isExpanded={expandedSections.includes('bar-stats')}
+                    />
+                    <span className="text-coreempty-euicoloremptyshade font-s-paragraph-bold">Alerts</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Show alerts
+                  </Button>
+                </div>
+                
+                {expandedSections.includes('bar-stats') && (
+                  <div className="p-4 border-t border-[#2a2d35]">
                     <div className="space-y-6">
                       {/* Statistics Header */}
                       <div className="flex items-center justify-between">
@@ -702,9 +746,9 @@ export const PageBodySubsection = (): JSX.Element => {
                         <BarChart data={barChartData} height={300} />
                       </div>
                     </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+                  </div>
+                )}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
