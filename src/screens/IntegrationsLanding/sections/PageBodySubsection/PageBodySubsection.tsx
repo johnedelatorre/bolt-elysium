@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
@@ -27,33 +27,70 @@ export const PageBodySubsection = (): JSX.Element => {
     'bar-stats'
   ]);
 
-  // Integration categories with counts - matching the design exactly
-  const categories = [
-    { name: "All Categories", count: 300, selected: true },
-    { name: "AWS", count: 50, selected: false },
-    { name: "Azure", count: 5, selected: false },
-    { name: "Cloud", count: 8, selected: false },
-    { name: "Communications", count: 100, selected: false },
-    { name: "Config Management", count: 111, selected: false },
-    { name: "Containers", count: 45, selected: false },
-    { name: "CRM", count: 100, selected: false },
-    { name: "Database", count: 234, selected: false },
-    { name: "Elastic Stack", count: 234, selected: false },
-    { name: "Enterprise Search", count: 234, selected: false },
-    { name: "File Storage", count: 234, selected: false },
-    { name: "Geo", count: 234, selected: false },
-    { name: "Google Cloud", count: 234, selected: false },
-    { name: "Infrastructure", count: 234, selected: false },
-    { name: "Kubernetes", count: 234, selected: false },
-    { name: "Language Client", count: 234, selected: false },
-    { name: "Message Broker", count: 234, selected: false },
-    { name: "Microsoft 365", count: 234, selected: false },
-    { name: "Monitoring", count: 234, selected: false },
-    { name: "Operating Systems", count: 234, selected: false },
-    { name: "Threat Intelligence", count: 234, selected: false },
-    { name: "Upload a File", count: 234, selected: false },
-    { name: "Web Server", count: 234, selected: false },
+  // Integration categories with counts - Extended list with 40+ categories
+  const allCategories = [
+    { name: "All Categories", count: 1250, selected: true },
+    { name: "AWS", count: 85, selected: false },
+    { name: "Azure", count: 42, selected: false },
+    { name: "Cloud", count: 67, selected: false },
+    { name: "Communications", count: 156, selected: false },
+    { name: "Config Management", count: 89, selected: false },
+    { name: "Containers", count: 73, selected: false },
+    { name: "CRM", count: 124, selected: false },
+    { name: "Database", count: 198, selected: false },
+    { name: "Elastic Stack", count: 145, selected: false },
+    { name: "Enterprise Search", count: 78, selected: false },
+    { name: "File Storage", count: 92, selected: false },
+    { name: "Geo", count: 34, selected: false },
+    { name: "Google Cloud", count: 56, selected: false },
+    { name: "Infrastructure", count: 167, selected: false },
+    { name: "Kubernetes", count: 89, selected: false },
+    { name: "Language Client", count: 45, selected: false },
+    { name: "Message Broker", count: 67, selected: false },
+    { name: "Microsoft 365", count: 134, selected: false },
+    { name: "Monitoring", count: 203, selected: false },
+    { name: "Operating Systems", count: 112, selected: false },
+    { name: "Threat Intelligence", count: 87, selected: false },
+    { name: "Upload a File", count: 23, selected: false },
+    { name: "Web Server", count: 156, selected: false },
+    { name: "Analytics", count: 178, selected: false },
+    { name: "API Management", count: 94, selected: false },
+    { name: "Application Performance", count: 67, selected: false },
+    { name: "Backup & Recovery", count: 45, selected: false },
+    { name: "Business Intelligence", count: 89, selected: false },
+    { name: "CI/CD", count: 123, selected: false },
+    { name: "Content Management", count: 56, selected: false },
+    { name: "Data Integration", count: 134, selected: false },
+    { name: "DevOps", count: 167, selected: false },
+    { name: "E-commerce", count: 78, selected: false },
+    { name: "Email Services", count: 92, selected: false },
+    { name: "Finance", count: 67, selected: false },
+    { name: "Healthcare", count: 45, selected: false },
+    { name: "Identity Management", count: 89, selected: false },
+    { name: "IoT", count: 56, selected: false },
+    { name: "Load Balancing", count: 34, selected: false },
+    { name: "Machine Learning", count: 123, selected: false },
+    { name: "Network Security", count: 156, selected: false },
+    { name: "Notification Services", count: 78, selected: false },
+    { name: "Project Management", count: 92, selected: false },
+    { name: "Quality Assurance", count: 45, selected: false },
+    { name: "Real-time Analytics", count: 67, selected: false },
+    { name: "Social Media", count: 89, selected: false },
+    { name: "Storage Solutions", count: 134, selected: false },
+    { name: "Testing Tools", count: 56, selected: false },
+    { name: "Version Control", count: 78, selected: false },
+    { name: "Workflow Automation", count: 123, selected: false }
   ];
+
+  // Filter categories based on search query
+  const filteredCategories = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return allCategories;
+    }
+    return allCategories.filter(category =>
+      category.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
 
   // Featured integrations at the top - exactly as shown in design
   const featuredIntegrations = [
@@ -259,10 +296,10 @@ export const PageBodySubsection = (): JSX.Element => {
 
             {/* Browse Integrations Tab */}
             <TabsContent value="browse" className="mt-6">
-              <div className="flex gap-6">
-                {/* Left Sidebar - Categories */}
-                <div className="w-80 flex-shrink-0">
-                  <div className="space-y-4">
+              <div className="flex gap-6 h-full">
+                {/* Left Sidebar - Categories - Extended to full height */}
+                <div className="w-80 flex-shrink-0 h-full">
+                  <div className="space-y-4 h-full flex flex-col">
                     {/* Search */}
                     <div className="relative">
                       <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-subdued-euitextsubduedcolor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -270,32 +307,40 @@ export const PageBodySubsection = (): JSX.Element => {
                       </svg>
                       <input
                         type="text"
-                        placeholder="Search Dashboards"
+                        placeholder="Search Categories"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-10 pr-4 py-2 bg-[#2a2d35] border border-[#404040] rounded-md text-coreempty-euicoloremptyshade placeholder-text-subdued-euitextsubduedcolor focus:outline-none focus:ring-2 focus:ring-textprimary-euicolorprimarytext focus:border-transparent"
                       />
                     </div>
 
-                    {/* Categories List */}
-                    <div className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg overflow-hidden">
-                      <ScrollArea className="h-[600px]">
+                    {/* Categories List - Extended to full height */}
+                    <div className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg overflow-hidden flex-1">
+                      <ScrollArea className="h-full">
                         <div className="p-0">
-                          {categories.map((category, index) => (
-                            <div
-                              key={category.name}
-                              className={`flex items-center justify-between py-3 px-4 hover:bg-[#2a2d35] cursor-pointer transition-colors duration-200 border-b border-[#2a2d35] last:border-b-0 ${
-                                category.name === 'All Categories' ? 'bg-[#2a2d35] text-textprimary-euicolorprimarytext' : ''
-                              }`}
-                            >
-                              <span className={`text-sm ${category.name === 'All Categories' ? 'text-textprimary-euicolorprimarytext font-medium' : 'text-coreempty-euicoloremptyshade'}`}>
-                                {category.name}
-                              </span>
-                              <Badge variant="secondary" className="bg-[#404040] text-coreempty-euicoloremptyshade text-xs border-0 px-2 py-1 rounded-full">
-                                {category.count}
-                              </Badge>
+                          {filteredCategories.length > 0 ? (
+                            filteredCategories.map((category, index) => (
+                              <div
+                                key={category.name}
+                                className={`flex items-center justify-between py-3 px-4 hover:bg-[#2a2d35] cursor-pointer transition-colors duration-200 border-b border-[#2a2d35] last:border-b-0 ${
+                                  category.name === 'All Categories' ? 'bg-[#2a2d35] text-textprimary-euicolorprimarytext' : ''
+                                }`}
+                              >
+                                <span className={`text-sm ${category.name === 'All Categories' ? 'text-textprimary-euicolorprimarytext font-medium' : 'text-coreempty-euicoloremptyshade'}`}>
+                                  {category.name}
+                                </span>
+                                <Badge variant="secondary" className="bg-[#404040] text-coreempty-euicoloremptyshade text-xs border-0 px-2 py-1 rounded-full">
+                                  {category.count}
+                                </Badge>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="py-8 px-4 text-center">
+                              <p className="text-text-subdued-euitextsubduedcolor text-sm">
+                                No categories found matching "{searchQuery}"
+                              </p>
                             </div>
-                          ))}
+                          )}
                         </div>
                       </ScrollArea>
                     </div>
