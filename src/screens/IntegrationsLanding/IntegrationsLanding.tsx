@@ -4,7 +4,7 @@ import { PageSideNavSubsection } from "./sections/PageSideNavSubsection";
 
 export const IntegrationsLanding = (): JSX.Element => {
   return (
-    <div className="flex min-h-screen items-stretch bg-coredarkthemedarktheme-background">
+    <div className="flex h-screen items-stretch bg-coredarkthemedarktheme-background overflow-hidden">
       <PageSideNavSubsection />
       <PageBodySubsection />
     </div>

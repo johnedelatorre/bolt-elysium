@@ -88,8 +88,8 @@ export const PageBodySubsection = (): JSX.Element => {
   const integrationRows = Array(7).fill(integrationCards);
 
   return (
-    <div className="flex flex-col flex-1 grow bg-[#19191a] overflow-hidden shadow-shadow-bottom-medium">
-      <header className="flex items-center justify-between p-2 relative w-full bg-transparent shadow-shadow-bottom-small">
+    <div className="flex flex-col flex-1 grow bg-[#19191a] h-screen overflow-hidden shadow-shadow-bottom-medium">
+      <header className="flex items-center justify-between p-2 relative w-full bg-transparent shadow-shadow-bottom-small flex-shrink-0">
         <Breadcrumb className="inline-flex items-center">
           <BreadcrumbItem>
             Integrations
@@ -115,9 +115,9 @@ export const PageBodySubsection = (): JSX.Element => {
         </Button>
       </header>
 
-      <Separator className="bg-[#303030]" />
+      <Separator className="bg-[#303030] flex-shrink-0" />
 
-      <div className="flex flex-col gap-6 pt-6 pb-px px-6 w-full">
+      <div className="flex flex-col gap-6 pt-6 pb-px px-6 w-full flex-shrink-0">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2.5">
             <h1 className="font-title-large text-core-lightest-euicolorlightestshade text-[length:var(--title-large-font-size)] tracking-[var(--title-large-letter-spacing)] leading-[var(--title-large-line-height)]">
@@ -152,7 +152,7 @@ export const PageBodySubsection = (): JSX.Element => {
         </Tabs>
       </div>
 
-      <div className="p-6 w-full flex justify-between">
+      <div className="p-6 w-full flex justify-between flex-shrink-0">
         {featuredIntegrations.map((integration, index) => (
           <Card
             key={index}
@@ -189,9 +189,9 @@ export const PageBodySubsection = (): JSX.Element => {
         ))}
       </div>
 
-      <div className="flex h-[1186px] items-start gap-[50px] p-6 w-full">
+      <div className="flex flex-1 items-start gap-[50px] p-6 w-full overflow-y-auto">
         {/* Left sidebar with categories */}
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start flex-shrink-0">
           <div className="flex flex-col items-start gap-2">
             {categories.map((category, index) => (
               <div key={index} className="relative w-[200px] h-8">
@@ -279,9 +279,9 @@ export const PageBodySubsection = (): JSX.Element => {
         </div>
 
         {/* Main content area with integration cards */}
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 min-h-0">
           {/* Search and filter controls */}
-          <div className="flex items-center gap-4 pb-5">
+          <div className="flex items-center gap-4 pb-5 flex-shrink-0">
             <div className="relative flex-1 h-10">
               <Input
                 className="h-10 bg-[#252526] border-[#1322951a] rounded-md pl-10"
@@ -340,77 +340,79 @@ export const PageBodySubsection = (): JSX.Element => {
             </div>
           </div>
 
-          {/* Integration cards grid */}
-          {integrationRows.map((row, rowIndex) => (
-            <div
-              key={`row-${rowIndex}`}
-              className="flex items-start justify-between pb-5"
-            >
-              {row.map((card, cardIndex) => (
-                <Card
-                  key={`card-${rowIndex}-${cardIndex}`}
-                  className="w-[280px] bg-[#23262b] border-[#98a2b3] rounded-md"
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-4">
-                      {card.iconType === "aws" ? (
-                        <div className="w-8 h-8 bg-[url(/icon.svg)] bg-[100%_100%]" />
-                      ) : card.iconType === "amazon" ? (
-                        <div className="flex w-8 h-[47px] items-center justify-center">
-                          <div className="w-[33px] h-12 bg-[url(/group.png)] bg-[100%_100%]">
+          {/* Integration cards grid - scrollable area */}
+          <div className="flex-1 overflow-y-auto">
+            {integrationRows.map((row, rowIndex) => (
+              <div
+                key={`row-${rowIndex}`}
+                className="flex items-start justify-between pb-5"
+              >
+                {row.map((card, cardIndex) => (
+                  <Card
+                    key={`card-${rowIndex}-${cardIndex}`}
+                    className="w-[280px] bg-[#23262b] border-[#98a2b3] rounded-md"
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-4">
+                        {card.iconType === "aws" ? (
+                          <div className="w-8 h-8 bg-[url(/icon.svg)] bg-[100%_100%]" />
+                        ) : card.iconType === "amazon" ? (
+                          <div className="flex w-8 h-[47px] items-center justify-center">
+                            <div className="w-[33px] h-12 bg-[url(/group.png)] bg-[100%_100%]">
+                              <img
+                                className="w-[30px] h-[45px] mt-px ml-px"
+                                alt="Group"
+                                src="/group-1.png"
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex w-8 h-[47px] items-start justify-center">
                             <img
-                              className="w-[30px] h-[45px] mt-px ml-px"
+                              className="w-8 h-[36.06px]"
                               alt="Group"
-                              src="/group-1.png"
+                              src="/group-30.png"
                             />
                           </div>
-                        </div>
-                      ) : (
-                        <div className="flex w-8 h-[47px] items-start justify-center">
-                          <img
-                            className="w-8 h-[36.06px]"
-                            alt="Group"
-                            src="/group-30.png"
-                          />
-                        </div>
-                      )}
+                        )}
 
-                      <div className="flex flex-col gap-1.5 flex-1">
-                        <h3
-                          className={`${card.iconType === "aws" ? "font-title-small text-[length:var(--title-small-font-size)]" : "font-bold text-[22px] tracking-[-1.00px]"} text-panelplain leading-8`}
-                        >
-                          {card.title}
-                        </h3>
-
-                        <p
-                          className={`${card.iconType === "aws" ? "font-s-paragraph-regular text-[length:var(--s-paragraph-regular-font-size)] tracking-[var(--s-paragraph-regular-letter-spacing)]" : "font-normal text-sm tracking-[-1.00px]"} text-panelplain leading-[21px]`}
-                        >
-                          {card.description}
-                        </p>
-
-                        <div className="flex items-center gap-1">
-                          <img className="w-4 h-4" alt="Dot" src="/dot.svg" />
-                          <span
-                            className={`text-panelplain text-xs ${card.iconType === "aws" ? "font-normal tracking-[0]" : "font-normal tracking-[-0.12px]"} leading-3`}
+                        <div className="flex flex-col gap-1.5 flex-1">
+                          <h3
+                            className={`${card.iconType === "aws" ? "font-title-small text-[length:var(--title-small-font-size)]" : "font-bold text-[22px] tracking-[-1.00px]"} text-panelplain leading-8`}
                           >
-                            <span className="font-bold leading-[18px]">
-                              {card.installedCount}
-                            </span>
+                            {card.title}
+                          </h3>
+
+                          <p
+                            className={`${card.iconType === "aws" ? "font-s-paragraph-regular text-[length:var(--s-paragraph-regular-font-size)] tracking-[var(--s-paragraph-regular-letter-spacing)]" : "font-normal text-sm tracking-[-1.00px]"} text-panelplain leading-[21px]`}
+                          >
+                            {card.description}
+                          </p>
+
+                          <div className="flex items-center gap-1">
+                            <img className="w-4 h-4" alt="Dot" src="/dot.svg" />
                             <span
-                              className={`${card.iconType === "aws" ? "leading-[18px]" : "tracking-[0] leading-[0.1px]"}`}
+                              className={`text-panelplain text-xs ${card.iconType === "aws" ? "font-normal tracking-[0]" : "font-normal tracking-[-0.12px]"} leading-3`}
                             >
-                              {" "}
-                              Integrations Installed
+                              <span className="font-bold leading-[18px]">
+                                {card.installedCount}
+                              </span>
+                              <span
+                                className={`${card.iconType === "aws" ? "leading-[18px]" : "tracking-[0] leading-[0.1px]"}`}
+                              >
+                                {" "}
+                                Integrations Installed
+                              </span>
                             </span>
-                          </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
