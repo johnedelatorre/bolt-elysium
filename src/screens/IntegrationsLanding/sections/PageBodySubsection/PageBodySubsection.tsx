@@ -51,11 +51,13 @@ export const PageBodySubsection = (): JSX.Element => {
       title: "Web Crawler",
       description: "Add search to your website with the Enterprise Search Web Crawler",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="12" fill="#006AA2" opacity="0.2" />
-          <path d="M12 6C14.2091 6 16 7.79086 16 10C16 12.2091 14.2091 14 12 14C9.79086 14 8 12.2091 8 10C8 7.79086 9.79086 6 12 6ZM12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8Z" fill="#006AA2"/>
-          <path d="M12 15C14.67 15 20 16.33 20 19V20H4V19C4 16.33 9.33 15 12 15ZM12 16.9C9.03 16.9 5.9 18.36 5.9 19V18.1H18.1V19C18.1 18.36 14.97 16.9 12 16.9Z" fill="#006AA2"/>
-        </svg>
+        <div className="w-8 h-8 flex items-center justify-center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="12" fill="#006AA2" opacity="0.2" />
+            <path d="M12 6C14.2091 6 16 7.79086 16 10C16 12.2091 14.2091 14 12 14C9.79086 14 8 12.2091 8 10C8 7.79086 9.79086 6 12 6ZM12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8Z" fill="#006AA2"/>
+            <path d="M12 15C14.67 15 20 16.33 20 19V20H4V19C4 16.33 9.33 15 12 15ZM12 16.9C9.03 16.9 5.9 18.36 5.9 19V18.1H18.1V19C18.1 18.36 14.97 16.9 12 16.9Z" fill="#006AA2"/>
+          </svg>
+        </div>
       )
     },
     {
@@ -63,13 +65,15 @@ export const PageBodySubsection = (): JSX.Element => {
       title: "Elysium APM",
       description: "Monitor detect and diagnose complex application performance issues",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="24" height="24" rx="4" fill="#006AA2" fillOpacity="0.2"/>
-          <path d="M5 19H19V5H5V19ZM3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5Z" fill="#006AA2"/>
-          <path d="M11 7H13V17H11V7Z" fill="#006AA2"/>
-          <path d="M15 10H17V17H15V10Z" fill="#006AA2"/>
-          <path d="M7 13H9V17H7V13Z" fill="#006AA2"/>
-        </svg>
+        <div className="w-8 h-8 flex items-center justify-center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="4" fill="#006AA2" fillOpacity="0.2"/>
+            <path d="M5 19H19V5H5V19ZM3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5Z" fill="#006AA2"/>
+            <path d="M11 7H13V17H11V7Z" fill="#006AA2"/>
+            <path d="M15 10H17V17H15V10Z" fill="#006AA2"/>
+            <path d="M7 13H9V17H7V13Z" fill="#006AA2"/>
+          </svg>
+        </div>
       )
     },
     {
@@ -77,11 +81,13 @@ export const PageBodySubsection = (): JSX.Element => {
       title: "Endpoint and Cloud Security",
       description: "Protect your hosts and cloud workloads with threat prevention, detection and deep security data visibility",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="24" height="24" rx="4" fill="#006AA2" fillOpacity="0.2"/>
-          <path d="M12 3L4 6.5V12C4 16.5 7.5 20.75 12 22C16.5 20.75 20 16.5 20 12V6.5L12 3ZM18 12C18 15.64 15.27 19.12 12 20.38C8.73 19.12 6 15.64 6 12V7.79L12 5.11L18 7.79V12Z" fill="#006AA2"/>
-          <path d="M9.5 12.8L7.5 10.8L6.1 12.2L9.5 15.6L17.5 7.6L16.1 6.2L9.5 12.8Z" fill="#006AA2"/>
-        </svg>
+        <div className="w-8 h-8 flex items-center justify-center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="4" fill="#006AA2" fillOpacity="0.2"/>
+            <path d="M12 3L4 6.5V12C4 16.5 7.5 20.75 12 22C16.5 20.75 20 16.5 20 12V6.5L12 3ZM18 12C18 15.64 15.27 19.12 12 20.38C8.73 19.12 6 15.64 6 12V7.79L12 5.11L18 7.79V12Z" fill="#006AA2"/>
+            <path d="M9.5 12.8L7.5 10.8L6.1 12.2L9.5 15.6L17.5 7.6L16.1 6.2L9.5 12.8Z" fill="#006AA2"/>
+          </svg>
+        </div>
       )
     }
   ];
@@ -101,17 +107,6 @@ export const PageBodySubsection = (): JSX.Element => {
         data: [800, 1200, 1800, 1500, 1000, 1300, 1100],
         borderColor: '#FF4560',
         backgroundColor: 'rgba(255, 69, 96, 0.1)',
-      }
-    ],
-  };
-
-  const barChartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Alerts',
-        data: [65, 59, 80, 81, 56, 55],
-        backgroundColor: '#006AA2',
       }
     ],
   };
@@ -144,7 +139,26 @@ export const PageBodySubsection = (): JSX.Element => {
 
   return (
     <div className="flex-1 overflow-auto bg-[#1a1d23] text-white h-screen">
-      <div className="p-6 h-full">
+      {/* Header with breadcrumbs */}
+      <div className="bg-[#1d1e24] border-b border-[#303030] px-4 py-2 flex items-center">
+        <div className="flex items-center space-x-2 text-sm">
+          <span className="text-gray-400">Integrations</span>
+          <span className="text-gray-600">/</span>
+          <span className="text-gray-400">Browse Integrations</span>
+          <span className="text-gray-600">/</span>
+          <span className="text-blue-400">Breadcrumb</span>
+        </div>
+        <div className="ml-auto flex space-x-4">
+          <button className="px-3 py-1 text-sm text-gray-300 hover:text-white">Inspect</button>
+          <button className="px-3 py-1 text-sm text-gray-300 hover:text-white">Add</button>
+          <button className="px-3 py-1 text-sm text-gray-300 hover:text-white">Options</button>
+          <button className="px-3 py-1 text-sm text-gray-300 hover:text-white">Share</button>
+          <button className="px-3 py-1 text-sm text-gray-300 hover:text-white">Cancel</button>
+          <button className="px-3 py-1 text-sm bg-blue-600 text-white rounded">Save changes</button>
+        </div>
+      </div>
+
+      <div className="p-6 h-[calc(100%-48px)]">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center mb-2">
@@ -160,11 +174,11 @@ export const PageBodySubsection = (): JSX.Element => {
 
         {/* Tabs */}
         <Tabs defaultValue="browse" className="h-[calc(100%-80px)]">
-          <TabsList className="mb-4 border-b border-gray-700 w-full">
-            <TabsTrigger value="browse" className="px-4 py-2 text-gray-300 data-[state=active]:text-[#006AA2] data-[state=active]:border-b-2 data-[state=active]:border-[#006AA2]">
+          <TabsList className="mb-4 border-b border-gray-700 w-full justify-start">
+            <TabsTrigger value="browse" className="px-4 py-2 text-gray-300 data-[state=active]:text-[#006AA2] data-[state=active]:border-b-2 data-[state=active]:border-[#006AA2] rounded-none">
               Browse Integrations
             </TabsTrigger>
-            <TabsTrigger value="manage" className="px-4 py-2 text-gray-300 data-[state=active]:text-[#006AA2] data-[state=active]:border-b-2 data-[state=active]:border-[#006AA2]">
+            <TabsTrigger value="manage" className="px-4 py-2 text-gray-300 data-[state=active]:text-[#006AA2] data-[state=active]:border-b-2 data-[state=active]:border-[#006AA2] rounded-none">
               Manage
             </TabsTrigger>
           </TabsList>
@@ -313,7 +327,7 @@ export const PageBodySubsection = (): JSX.Element => {
                     {/* Grid of integration cards */}
                     <ScrollArea className="h-full">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4">
-                        {Array.from({ length: 20 }).map((_, index) => (
+                        {Array.from({ length: 15 }).map((_, index) => (
                           <div 
                             key={`integration-${index}`}
                             className="bg-[#23262B] border border-[#303030] rounded-md overflow-hidden"
@@ -422,7 +436,7 @@ export const PageBodySubsection = (): JSX.Element => {
                           <tr key={alert.id} className="border-t border-gray-800">
                             <td className="py-3">
                               <div className="flex items-center justify-center">
-                                <Checkbox id={`alert-${alert.id}`} className="border-gray-600" />
+                                <Checkbox id={`alert-${alert.id}`} className="border-gray-600" checked={index < 3} />
                               </div>
                             </td>
                             <td className="py-3 text-sm">{alert.description}</td>
