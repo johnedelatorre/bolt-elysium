@@ -216,8 +216,8 @@ export const PageBodySubsection = (): JSX.Element => {
     <div className="flex flex-col flex-1 bg-[#19191a] h-screen overflow-hidden shadow-shadow-bottom-medium">
       {/* STICKY HEADER - Only this section is sticky */}
       <header className="sticky top-0 z-10 flex items-center justify-between p-2 w-full bg-[#19191a] shadow-shadow-bottom-small h-12">
-        {/* Custom Breadcrumb using SVG */}
-        <div className="flex items-center h-6">
+        {/* Custom Breadcrumb SVG */}
+        <div className="flex items-center h-full">
           <svg width="219" height="24" viewBox="0 0 219 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clipPath="url(#clip0_4294_59755)">
               <rect width="41" height="24" fill="#69707D" fillOpacity="0.2"/>
@@ -242,7 +242,7 @@ export const PageBodySubsection = (): JSX.Element => {
 
         <Button
           variant="default"
-          className="h-10 bg-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade rounded"
+          className="h-8 bg-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade rounded px-3 py-0 flex items-center"
         >
           <div className="w-4 h-4 mr-2">
             <img
