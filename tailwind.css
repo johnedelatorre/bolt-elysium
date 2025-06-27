@@ -5,6 +5,35 @@
   .all-\[unset\] {
     all: unset;
   }
+  
+  /* Custom Scrollbar Styles */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(96, 96, 96, 0.6) rgba(48, 48, 48, 0.3);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(48, 48, 48, 0.3);
+    border-radius: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(96, 96, 96, 0.6);
+    border-radius: 4px;
+    border: 1px solid rgba(48, 48, 48, 0.5);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(120, 120, 120, 0.8);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-corner {
+    background: rgba(48, 48, 48, 0.3);
+  }
 }
 
 :root {

@@ -7,7 +7,6 @@ import { Checkbox } from "../../../../components/ui/checkbox";
 import { Input } from "../../../../components/ui/input";
 import { Separator } from "../../../../components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from "../../../../components/ui/breadcrumb";
 
 export const PageBodySubsection = (): JSX.Element => {
   const [isInstalledToggled, setIsInstalledToggled] = useState(false);
@@ -214,37 +213,51 @@ export const PageBodySubsection = (): JSX.Element => {
 
   return (
     <div className="flex flex-col flex-1 bg-[#19191a] h-screen overflow-hidden shadow-shadow-bottom-medium">
-      {/* STICKY HEADER - Only this section is sticky */}
-      <header className="sticky top-0 z-10 flex items-center justify-between p-2 w-full bg-[#19191a] shadow-shadow-bottom-small">
-        <Breadcrumb className="inline-flex items-center">
-          <BreadcrumbItem>
+      {/* STICKY HEADER - Updated to match design */}
+      <header className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 w-full bg-[#19191a] border-b border-[#303030]">
+        {/* Breadcrumb Navigation - Updated to match design */}
+        <nav className="flex items-center space-x-2 text-sm">
+          <button className="px-3 py-1.5 bg-[#69707D] bg-opacity-20 text-[#69707D] rounded hover:bg-opacity-30 transition-colors">
+            Home
+          </button>
+          
+          <svg className="w-4 h-4 text-[#69707D]" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M6 4L10 8L6 12"/>
+          </svg>
+          
+          <button className="px-3 py-1.5 bg-[#69707D] bg-opacity-20 text-[#69707D] rounded hover:bg-opacity-30 transition-colors">
+            Configure
+          </button>
+          
+          <svg className="w-4 h-4 text-[#69707D]" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M6 4L10 8L6 12"/>
+          </svg>
+          
+          <button className="px-3 py-1.5 bg-[#8EC2FF] bg-opacity-20 text-[#00A8FF] rounded font-medium">
             Integrations
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem isActive>
-            Browse Integrations
-          </BreadcrumbItem>
-        </Breadcrumb>
+          </button>
+          
+          <svg className="w-4 h-4 text-[#69707D]" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M6 4L10 8L6 12"/>
+          </svg>
+          
+          <span className="text-[#F0F0FF] font-medium">Browse Integrations</span>
+        </nav>
 
+        {/* Save Changes Button */}
         <Button
           variant="default"
-          className="h-8 bg-textprimary-euicolorprimarytext text-coreempty-euicoloremptyshade rounded"
+          className="h-8 bg-[#053C5A] text-[#F0F0FF] rounded px-4 py-2 flex items-center gap-2 hover:bg-[#064A6B] transition-colors"
         >
-          <div className="w-4 h-4 mr-2">
-            <img
-              className="w-3.5 h-[13px] mt-[3px] ml-0.5"
-              alt="Union"
-              src="/union-7.svg"
-            />
-          </div>
-          View Deployment Details
+          <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M13.38 17C13.64 17 13.73 17.0094 13.83 17.0322C13.93 17.055 14.01 17.0917 14.1 17.1455C14.19 17.1993 14.26 17.256 14.44 17.4385L16.56 19.5615C16.74 19.744 16.8 19.8143 16.85 19.9004C16.91 19.9865 16.94 20.074 16.97 20.1729C16.99 20.2718 17 20.3613 17 20.6191V29.7178C17 30.1635 16.95 30.3253 16.87 30.4883C16.78 30.6512 16.65 30.7791 16.49 30.8662C16.33 30.9534 16.16 31 15.72 31H4.28C3.84 31 3.67 30.9534 3.51 30.8662C3.35 30.7791 3.22 30.6512 3.13 30.4883C3.05 30.3253 3 30.1635 3 29.7178V18.2822C3 17.8365 3.05 17.6747 3.13 17.5117C3.22 17.3488 3.35 17.2209 3.51 17.1338C3.67 17.0466 3.84 17 4.28 17H13.38Z"/>
+          </svg>
+          Save changes
         </Button>
       </header>
 
-      <Separator className="bg-[#303030]" />
-
-      {/* SCROLLABLE CONTENT - Everything below the header scrolls */}
-      <div className="flex-1 overflow-y-auto">
+      {/* SCROLLABLE CONTENT - Everything below the header scrolls with custom scrollbar */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
         <div className="flex flex-col gap-6 pt-6 pb-px px-6 w-full">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2.5">
