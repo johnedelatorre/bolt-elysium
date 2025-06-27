@@ -13,6 +13,10 @@ export const PageBodySubsection = (): JSX.Element => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showInstalled, setShowInstalled] = useState(false);
+  
+  // Checkbox functionality for alerts breakdown
+  const [selectedAlerts, setSelectedAlerts] = useState<number[]>([0, 1, 2]); // Initially select first 3
+  const totalAlerts = 10;
 
   // Integration categories with counts - matching the design exactly
   const categories = [
@@ -85,6 +89,47 @@ export const PageBodySubsection = (): JSX.Element => {
       installCount: 5,
     };
   });
+
+  // Mock alert data
+  const alertsData = Array.from({ length: totalAlerts }, (_, index) => ({
+    id: index,
+    description: "Analyze mock web traffic log data for Elastic's website",
+    status: "Installed",
+    category: index < 3 ? 'Security Data Analytics' : index === 3 ? 'Metrics' : index === 4 ? 'Analytics' : 'Security Data Analytics',
+    lastUpdated: "Dec 17, 2020"
+  }));
+
+  // Checkbox handlers
+  const handleSelectAll = () => {
+    setSelectedAlerts(Array.from({ length: totalAlerts }, (_, i) => i));
+  };
+
+  const handleDeselectAll = () => {
+    setSelectedAlerts([]);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedAlerts([]);
+  };
+
+  const handleIndividualSelect = (alertId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedAlerts(prev => [...prev, alertId]);
+    } else {
+      setSelectedAlerts(prev => prev.filter(id => id !== alertId));
+    }
+  };
+
+  const handleHeaderCheckbox = (checked: boolean) => {
+    if (checked) {
+      handleSelectAll();
+    } else {
+      handleDeselectAll();
+    }
+  };
+
+  const isAllSelected = selectedAlerts.length === totalAlerts;
+  const isIndeterminate = selectedAlerts.length > 0 && selectedAlerts.length < totalAlerts;
 
   // Line chart data
   const lineChartData = {
@@ -368,7 +413,7 @@ export const PageBodySubsection = (): JSX.Element => {
 
             {/* Manage Tab */}
             <TabsContent value="manage" className="space-y-6 mt-6">
-              {/* Alerts Breakdown Section - Collapsible */}
+              {/* Alerts Breakdown Section - Collapsible with Full Checkbox Functionality */}
               <Accordion type="single" collapsible defaultValue="alerts-breakdown" className="w-full">
                 <AccordionItem value="alerts-breakdown" className="border border-[#2a2d35] rounded-lg bg-[#1d1e24]">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline">
@@ -385,18 +430,41 @@ export const PageBodySubsection = (): JSX.Element => {
                   </AccordionTrigger>
                   <AccordionContent className="p-4">
                     <div className="space-y-4">
-                      {/* Selection Info */}
-                      <div className="flex items-center gap-4 text-sm">
-                        <span className="text-textprimary-euicolorprimarytext">Showing 1-10 of 15</span>
-                        <span className="text-coreempty-euicoloremptyshade">Dashboards</span>
-                        <span className="text-textprimary-euicolorprimarytext">3 Selected</span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal underline"
-                        >
-                          Clear selection
-                        </Button>
+                      {/* Selection Info and Controls */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4 text-sm">
+                          <span className="text-textprimary-euicolorprimarytext">Showing 1-10 of 15</span>
+                          <span className="text-coreempty-euicoloremptyshade">Dashboards</span>
+                          <span className="text-textprimary-euicolorprimarytext">{selectedAlerts.length} Selected</span>
+                          {selectedAlerts.length > 0 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent p-0 h-auto font-normal underline"
+                              onClick={handleClearSelection}
+                            >
+                              Clear selection
+                            </Button>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent px-2 py-1 h-auto font-normal text-xs"
+                            onClick={handleSelectAll}
+                          >
+                            Select All
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-textprimary-euicolorprimarytext hover:text-blue-400 hover:bg-transparent px-2 py-1 h-auto font-normal text-xs"
+                            onClick={handleDeselectAll}
+                          >
+                            Deselect All
+                          </Button>
+                        </div>
                       </div>
 
                       {/* Data Table */}
@@ -404,7 +472,16 @@ export const PageBodySubsection = (): JSX.Element => {
                         {/* Table Header */}
                         <div className="bg-[#2a2d35] px-4 py-3 grid grid-cols-12 gap-4 items-center text-sm font-medium text-coreempty-euicoloremptyshade">
                           <div className="col-span-1">
-                            <Checkbox className="h-4 w-4" />
+                            <Checkbox 
+                              className="h-4 w-4" 
+                              checked={isAllSelected}
+                              onCheckedChange={handleHeaderCheckbox}
+                              ref={(el) => {
+                                if (el) {
+                                  el.indeterminate = isIndeterminate;
+                                }
+                              }}
+                            />
                           </div>
                           <div className="col-span-5">DESCRIPTION</div>
                           <div className="col-span-2">STATUS</div>
@@ -415,33 +492,34 @@ export const PageBodySubsection = (): JSX.Element => {
 
                         {/* Table Body */}
                         <div className="divide-y divide-[#2a2d35]">
-                          {Array.from({ length: 10 }).map((_, index) => (
+                          {alertsData.map((alert, index) => (
                             <div
-                              key={index}
+                              key={alert.id}
                               className={`px-4 py-3 grid grid-cols-12 gap-4 items-center text-sm hover:bg-[#2a2d35] transition-colors duration-200 ${
-                                index < 3 ? 'bg-[#2a2d35]' : 'bg-[#1d1e24]'
+                                selectedAlerts.includes(alert.id) ? 'bg-[#2a2d35]' : 'bg-[#1d1e24]'
                               }`}
                             >
                               <div className="col-span-1">
                                 <Checkbox 
                                   className="h-4 w-4" 
-                                  defaultChecked={index < 3}
+                                  checked={selectedAlerts.includes(alert.id)}
+                                  onCheckedChange={(checked) => handleIndividualSelect(alert.id, checked as boolean)}
                                 />
                               </div>
                               <div className="col-span-5 text-coreempty-euicoloremptyshade">
-                                Analyze mock web traffic log data for Elastic's website
+                                {alert.description}
                               </div>
                               <div className="col-span-2">
                                 <div className="flex items-center gap-2">
                                   <div className="w-2 h-2 bg-coresuccess-euicolorsuccess rounded-full"></div>
-                                  <span className="text-coreempty-euicoloremptyshade">Installed</span>
+                                  <span className="text-coreempty-euicoloremptyshade">{alert.status}</span>
                                 </div>
                               </div>
                               <div className="col-span-2 text-coreempty-euicoloremptyshade">
-                                {index < 3 ? 'Security Data Analytics' : index === 3 ? 'Metrics' : index === 4 ? 'Analytics' : 'Security Data Analytics'}
+                                {alert.category}
                               </div>
                               <div className="col-span-1 text-coreempty-euicoloremptyshade">
-                                Dec 17, 2020
+                                {alert.lastUpdated}
                               </div>
                               <div className="col-span-1">
                                 <Button
