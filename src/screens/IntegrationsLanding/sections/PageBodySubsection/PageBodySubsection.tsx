@@ -166,14 +166,15 @@ export const PageBodySubsection = (): JSX.Element => {
     }
   ];
 
+  // Chart data with proper coordinates for natural scaling
   const chartData = [
-    { day: 'Mon', value: 1000, x: 80 },
-    { day: 'Tue', value: 3000, x: 186 },
-    { day: 'Wed', value: 8000, x: 293 },
-    { day: 'Thu', value: 2500, x: 400 },
-    { day: 'Fri', value: 1000, x: 506 },
-    { day: 'Sat', value: 8500, x: 613 },
-    { day: 'Sun', value: 3000, x: 720 }
+    { day: 'Mon', value: 1000, x: 80, y: 280 },
+    { day: 'Tue', value: 3000, x: 180, y: 200 },
+    { day: 'Wed', value: 8000, x: 280, y: 80 },
+    { day: 'Thu', value: 2500, x: 380, y: 220 },
+    { day: 'Fri', value: 1000, x: 480, y: 280 },
+    { day: 'Sat', value: 8500, x: 580, y: 70 },
+    { day: 'Sun', value: 3000, x: 680, y: 200 }
   ];
 
   const handleRowSelect = (id: number) => {
@@ -756,66 +757,108 @@ export const PageBodySubsection = (): JSX.Element => {
                     </div>
                   </div>
 
-                  {/* Chart Container - Full Width with proper sizing */}
-                  <div className="w-full h-96 bg-[#1a1d23] rounded-lg p-0 overflow-hidden">
-                    <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                      {/* Grid background - fills entire container */}
-                      <rect width="100" height="100" fill="#1a1d23" />
+                  {/* Chart Container - Proper width and height with natural chart proportions */}
+                  <div className="relative w-full h-80 bg-[#1a1d23] rounded-lg overflow-hidden">
+                    {/* Chart SVG with fixed dimensions for proper scaling */}
+                    <svg 
+                      className="absolute inset-0 w-full h-full" 
+                      viewBox="0 0 800 320" 
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      {/* Background */}
+                      <rect width="800" height="320" fill="#1a1d23" />
                       
-                      {/* Grid lines - responsive to container */}
-                      <defs>
-                        <pattern id="grid" width="14.28" height="20" patternUnits="userSpaceOnUse">
-                          <path d="M 14.28 0 L 0 0 0 20" fill="none" stroke="#404040" strokeWidth="0.2"/>
-                        </pattern>
-                      </defs>
-                      <rect x="8" y="10" width="84" height="70" fill="url(#grid)" />
-
-                      {/* Y-axis labels */}
-                      <text x="3" y="15" fill="#666" fontSize="2.5">10K</text>
-                      <text x="3.5" y="30" fill="#666" fontSize="2.5">5K</text>
-                      <text x="3.5" y="45" fill="#666" fontSize="2.5">2K</text>
-                      <text x="4" y="60" fill="#666" fontSize="2.5">1K</text>
-                      <text x="5" y="75" fill="#666" fontSize="2.5">0</text>
-
-                      {/* Chart line with smooth curve - responsive */}
-                      <path
-                        d="M 12 70 Q 20 60 28 45 Q 36 30 44 50 Q 52 70 60 50 Q 68 30 76 35 Q 84 40 88 45"
-                        fill="none"
-                        stroke="#0071c2"
-                        strokeWidth="0.8"
-                        strokeLinecap="round"
-                      />
-
-                      {/* Data points - responsive positioning */}
-                      <circle cx="12" cy="70" r="1.2" fill="#0071c2" stroke="#1a1d23" strokeWidth="0.4" />
-                      <circle cx="28" cy="45" r="1.2" fill="#0071c2" stroke="#1a1d23" strokeWidth="0.4" />
-                      <circle cx="44" cy="20" r="1.2" fill="#0071c2" stroke="#1a1d23" strokeWidth="0.4" />
-                      <circle cx="60" cy="50" r="1.2" fill="#0071c2" stroke="#1a1d23" strokeWidth="0.4" />
-                      <circle cx="76" cy="25" r="1.2" fill="#0071c2" stroke="#1a1d23" strokeWidth="0.4" />
-                      <circle cx="88" cy="45" r="1.2" fill="#0071c2" stroke="#1a1d23" strokeWidth="0.4" />
-
-                      {/* Tooltip on Thursday point - properly sized */}
-                      <g>
-                        <rect x="52" y="35" width="16" height="10" fill="#2a2d35" rx="1" stroke="#404040" strokeWidth="0.2" />
-                        <text x="60" y="39" fill="#0071c2" fontSize="2" textAnchor="middle" fontWeight="bold">2,500</text>
-                        <text x="60" y="41.5" fill="#ff6b6b" fontSize="2" textAnchor="middle" fontWeight="bold">1,200</text>
-                        <text x="60" y="43.5" fill="#666" fontSize="1.5" textAnchor="middle">23 Aug, 2021</text>
-                        {/* Vertical dashed line */}
-                        <line x1="60" y1="50" x2="60" y2="80" stroke="#666" strokeWidth="0.3" strokeDasharray="1,1" />
+                      {/* Grid lines - vertical */}
+                      <g stroke="#404040" strokeWidth="1" opacity="0.3">
+                        {[80, 180, 280, 380, 480, 580, 680].map((x, i) => (
+                          <line key={i} x1={x} y1="40" x2={x} y2="280" />
+                        ))}
+                      </g>
+                      
+                      {/* Grid lines - horizontal */}
+                      <g stroke="#404040" strokeWidth="1" opacity="0.3">
+                        {[80, 120, 160, 200, 240, 280].map((y, i) => (
+                          <line key={i} x1="80" y1={y} x2="680" y2={y} />
+                        ))}
                       </g>
 
-                      {/* X-axis labels - responsive positioning */}
-                      <text x="12" y="87" fill="#666" fontSize="2.5" textAnchor="middle">Mon</text>
-                      <text x="24" y="87" fill="#666" fontSize="2.5" textAnchor="middle">Tue</text>
-                      <text x="36" y="87" fill="#666" fontSize="2.5" textAnchor="middle">Wed</text>
-                      <text x="48" y="87" fill="#666" fontSize="2.5" textAnchor="middle">Thu</text>
-                      <text x="60" y="87" fill="#666" fontSize="2.5" textAnchor="middle">Fri</text>
-                      <text x="72" y="87" fill="#666" fontSize="2.5" textAnchor="middle">Sat</text>
-                      <text x="84" y="87" fill="#666" fontSize="2.5" textAnchor="middle">Sun</text>
+                      {/* Y-axis labels */}
+                      <g fill="#666" fontSize="12" textAnchor="end">
+                        <text x="75" y="85">10K</text>
+                        <text x="75" y="125">5K</text>
+                        <text x="75" y="165">2K</text>
+                        <text x="75" y="205">1K</text>
+                        <text x="75" y="285">0</text>
+                      </g>
+
+                      {/* Chart line - smooth curve */}
+                      <path
+                        d="M 80 240 Q 130 220 180 160 Q 230 100 280 120 Q 330 140 380 180 Q 430 220 480 240 Q 530 260 580 100 Q 630 80 680 160"
+                        fill="none"
+                        stroke="#0071c2"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+
+                      {/* Data points */}
+                      {chartData.map((point, i) => (
+                        <circle 
+                          key={i}
+                          cx={point.x} 
+                          cy={point.y} 
+                          r="4" 
+                          fill="#0071c2" 
+                          stroke="#1a1d23" 
+                          strokeWidth="2" 
+                        />
+                      ))}
+
+                      {/* Tooltip on Thursday point */}
+                      <g>
+                        {/* Tooltip background */}
+                        <rect 
+                          x="320" 
+                          y="140" 
+                          width="120" 
+                          height="60" 
+                          fill="#2a2d35" 
+                          rx="4" 
+                          stroke="#404040" 
+                          strokeWidth="1" 
+                        />
+                        
+                        {/* Tooltip content */}
+                        <text x="380" y="158" fill="#0071c2" fontSize="14" textAnchor="middle" fontWeight="bold">2,500</text>
+                        <text x="380" y="175" fill="#ff6b6b" fontSize="14" textAnchor="middle" fontWeight="bold">1,200</text>
+                        <text x="380" y="190" fill="#666" fontSize="12" textAnchor="middle">23 August, 2021</text>
+                        
+                        {/* Vertical dashed line */}
+                        <line 
+                          x1="380" 
+                          y1="180" 
+                          x2="380" 
+                          y2="280" 
+                          stroke="#666" 
+                          strokeWidth="1" 
+                          strokeDasharray="4,4" 
+                        />
+                      </g>
+
+                      {/* X-axis labels */}
+                      <g fill="#666" fontSize="12" textAnchor="middle">
+                        <text x="80" y="305">Mon</text>
+                        <text x="180" y="305">Tue</text>
+                        <text x="280" y="305">Wed</text>
+                        <text x="380" y="305">Thu</text>
+                        <text x="480" y="305">Fri</text>
+                        <text x="580" y="305">Sat</text>
+                        <text x="680" y="305">Sun</text>
+                      </g>
                     </svg>
 
                     {/* Legend - positioned in top right */}
-                    <div className="absolute top-6 right-6 flex items-center gap-4">
+                    <div className="absolute top-4 right-4 flex items-center gap-4 bg-[#2a2d35] px-3 py-2 rounded border border-[#404040]">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                         <span className="text-sm text-panelplain font-medium">2,500</span>
