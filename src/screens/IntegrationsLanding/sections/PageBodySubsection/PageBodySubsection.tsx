@@ -13,7 +13,8 @@ export const PageBodySubsection = (): JSX.Element => {
   const [isInstalledToggled, setIsInstalledToggled] = useState(false);
   const [activeTab, setActiveTab] = useState("browse");
   const [alertsBreakdownExpanded, setAlertsBreakdownExpanded] = useState(true);
-  const [alertsAnalyticsExpanded, setAlertsAnalyticsExpanded] = useState(true);
+  const [alertsLineChartExpanded, setAlertsLineChartExpanded] = useState(true);
+  const [alertsBarChartExpanded, setAlertsBarChartExpanded] = useState(true);
   const [selectedRows, setSelectedRows] = useState<number[]>([1, 2, 3]);
   const [selectAll, setSelectAll] = useState(false);
 
@@ -166,8 +167,8 @@ export const PageBodySubsection = (): JSX.Element => {
     }
   ];
 
-  // Chart data with proper coordinates for natural scaling
-  const chartData = [
+  // Line chart data
+  const lineChartData = [
     { day: 'Mon', value: 1000, x: 80, y: 280 },
     { day: 'Tue', value: 3000, x: 180, y: 200 },
     { day: 'Wed', value: 8000, x: 280, y: 80 },
@@ -175,6 +176,19 @@ export const PageBodySubsection = (): JSX.Element => {
     { day: 'Fri', value: 1000, x: 480, y: 280 },
     { day: 'Sat', value: 8500, x: 580, y: 70 },
     { day: 'Sun', value: 3000, x: 680, y: 200 }
+  ];
+
+  // Bar chart data
+  const barChartData = [
+    { day: '14', income: 200, expense: 150 },
+    { day: '15', income: 120, expense: 140 },
+    { day: '16', income: 250, expense: 130 },
+    { day: '17', income: 200, expense: 60 },
+    { day: '18', income: 220, expense: 140 },
+    { day: '19', income: 180, expense: 150 },
+    { day: '20', income: 80, expense: 400 },
+    { day: '21', income: 240, expense: 100 },
+    { day: '22', income: 300, expense: 200 }
   ];
 
   const handleRowSelect = (id: number) => {
@@ -695,24 +709,24 @@ export const PageBodySubsection = (): JSX.Element => {
               )}
             </div>
 
-            {/* Alerts Analytics Section */}
+            {/* First Alerts Chart - Line Chart */}
             <div className="bg-[#2a2d35] rounded-lg">
               {/* Section Header - Collapsible */}
               <div 
                 className="flex items-center justify-between p-4 cursor-pointer hover:bg-[#323539] transition-colors"
-                onClick={() => setAlertsAnalyticsExpanded(!alertsAnalyticsExpanded)}
+                onClick={() => setAlertsLineChartExpanded(!alertsLineChartExpanded)}
               >
                 <div className="flex items-center gap-2">
                   <svg 
                     className={`w-4 h-4 text-text-disabled-euicolordisabledtext transition-transform duration-200 ${
-                      alertsAnalyticsExpanded ? 'rotate-0' : '-rotate-90'
+                      alertsLineChartExpanded ? 'rotate-0' : '-rotate-90'
                     }`} 
                     viewBox="0 0 16 16" 
                     fill="currentColor"
                   >
                     <path d="M8 12L3 7L4.5 5.5L8 9L11.5 5.5L13 7L8 12Z"/>
                   </svg>
-                  <h3 className="text-panelplain font-medium text-sm">Alerts Analytics</h3>
+                  <h3 className="text-panelplain font-medium text-sm">Alerts</h3>
                 </div>
                 <button className="text-[#0071c2] text-sm hover:underline">
                   Show alerts
@@ -720,7 +734,7 @@ export const PageBodySubsection = (): JSX.Element => {
               </div>
 
               {/* Collapsible Content */}
-              {alertsAnalyticsExpanded && (
+              {alertsLineChartExpanded && (
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h4 className="text-panelplain font-medium text-lg">Statistics</h4>
@@ -757,20 +771,19 @@ export const PageBodySubsection = (): JSX.Element => {
                     </div>
                   </div>
 
-                  {/* Chart Container - Proper width and height with natural chart proportions */}
+                  {/* Line Chart Container - Auto-fit width */}
                   <div className="relative w-full h-80 bg-[#1a1d23] rounded-lg overflow-hidden">
-                    {/* Chart SVG with fixed dimensions for proper scaling */}
                     <svg 
                       className="absolute inset-0 w-full h-full" 
-                      viewBox="0 0 800 320" 
+                      viewBox="0 0 1000 320" 
                       preserveAspectRatio="xMidYMid meet"
                     >
                       {/* Background */}
-                      <rect width="800" height="320" fill="#1a1d23" />
+                      <rect width="1000" height="320" fill="#1a1d23" />
                       
                       {/* Grid lines - vertical */}
                       <g stroke="#404040" strokeWidth="1" opacity="0.3">
-                        {[80, 180, 280, 380, 480, 580, 680].map((x, i) => (
+                        {[100, 200, 300, 400, 500, 600, 700, 800, 900].map((x, i) => (
                           <line key={i} x1={x} y1="40" x2={x} y2="280" />
                         ))}
                       </g>
@@ -778,22 +791,22 @@ export const PageBodySubsection = (): JSX.Element => {
                       {/* Grid lines - horizontal */}
                       <g stroke="#404040" strokeWidth="1" opacity="0.3">
                         {[80, 120, 160, 200, 240, 280].map((y, i) => (
-                          <line key={i} x1="80" y1={y} x2="680" y2={y} />
+                          <line key={i} x1="100" y1={y} x2="900" y2={y} />
                         ))}
                       </g>
 
                       {/* Y-axis labels */}
                       <g fill="#666" fontSize="12" textAnchor="end">
-                        <text x="75" y="85">10K</text>
-                        <text x="75" y="125">5K</text>
-                        <text x="75" y="165">2K</text>
-                        <text x="75" y="205">1K</text>
-                        <text x="75" y="285">0</text>
+                        <text x="95" y="85">10K</text>
+                        <text x="95" y="125">5K</text>
+                        <text x="95" y="165">2K</text>
+                        <text x="95" y="205">1K</text>
+                        <text x="95" y="285">0</text>
                       </g>
 
                       {/* Chart line - smooth curve */}
                       <path
-                        d="M 80 240 Q 130 220 180 160 Q 230 100 280 120 Q 330 140 380 180 Q 430 220 480 240 Q 530 260 580 100 Q 630 80 680 160"
+                        d="M 100 240 Q 150 220 200 160 Q 250 100 300 120 Q 400 140 500 180 Q 600 220 700 240 Q 750 260 800 100 Q 850 80 900 160"
                         fill="none"
                         stroke="#0071c2"
                         strokeWidth="3"
@@ -802,24 +815,19 @@ export const PageBodySubsection = (): JSX.Element => {
                       />
 
                       {/* Data points */}
-                      {chartData.map((point, i) => (
-                        <circle 
-                          key={i}
-                          cx={point.x} 
-                          cy={point.y} 
-                          r="4" 
-                          fill="#0071c2" 
-                          stroke="#1a1d23" 
-                          strokeWidth="2" 
-                        />
-                      ))}
+                      <circle cx="100" cy="240" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
+                      <circle cx="200" cy="160" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
+                      <circle cx="300" cy="120" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
+                      <circle cx="500" cy="180" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
+                      <circle cx="700" cy="240" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
+                      <circle cx="800" cy="100" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
+                      <circle cx="900" cy="160" r="4" fill="#0071c2" stroke="#1a1d23" strokeWidth="2" />
 
                       {/* Tooltip on Thursday point */}
                       <g>
-                        {/* Tooltip background */}
                         <rect 
-                          x="320" 
-                          y="140" 
+                          x="420" 
+                          y="120" 
                           width="120" 
                           height="60" 
                           fill="#2a2d35" 
@@ -828,16 +836,14 @@ export const PageBodySubsection = (): JSX.Element => {
                           strokeWidth="1" 
                         />
                         
-                        {/* Tooltip content */}
-                        <text x="380" y="158" fill="#0071c2" fontSize="14" textAnchor="middle" fontWeight="bold">2,500</text>
-                        <text x="380" y="175" fill="#ff6b6b" fontSize="14" textAnchor="middle" fontWeight="bold">1,200</text>
-                        <text x="380" y="190" fill="#666" fontSize="12" textAnchor="middle">23 August, 2021</text>
+                        <text x="480" y="138" fill="#0071c2" fontSize="14" textAnchor="middle" fontWeight="bold">2,500</text>
+                        <text x="480" y="155" fill="#ff6b6b" fontSize="14" textAnchor="middle" fontWeight="bold">1,200</text>
+                        <text x="480" y="170" fill="#666" fontSize="12" textAnchor="middle">23 August, 2021</text>
                         
-                        {/* Vertical dashed line */}
                         <line 
-                          x1="380" 
+                          x1="500" 
                           y1="180" 
-                          x2="380" 
+                          x2="500" 
                           y2="280" 
                           stroke="#666" 
                           strokeWidth="1" 
@@ -847,13 +853,13 @@ export const PageBodySubsection = (): JSX.Element => {
 
                       {/* X-axis labels */}
                       <g fill="#666" fontSize="12" textAnchor="middle">
-                        <text x="80" y="305">Mon</text>
-                        <text x="180" y="305">Tue</text>
-                        <text x="280" y="305">Wed</text>
-                        <text x="380" y="305">Thu</text>
-                        <text x="480" y="305">Fri</text>
-                        <text x="580" y="305">Sat</text>
-                        <text x="680" y="305">Sun</text>
+                        <text x="100" y="305">Mon</text>
+                        <text x="200" y="305">Tue</text>
+                        <text x="300" y="305">Wed</text>
+                        <text x="500" y="305">Thu</text>
+                        <text x="700" y="305">Fri</text>
+                        <text x="800" y="305">Sat</text>
+                        <text x="900" y="305">Sun</text>
                       </g>
                     </svg>
 
@@ -868,6 +874,147 @@ export const PageBodySubsection = (): JSX.Element => {
                         <span className="text-sm text-panelplain font-medium">1,200</span>
                       </div>
                     </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Second Alerts Chart - Bar Chart */}
+            <div className="bg-[#2a2d35] rounded-lg">
+              {/* Section Header - Collapsible */}
+              <div 
+                className="flex items-center justify-between p-4 cursor-pointer hover:bg-[#323539] transition-colors"
+                onClick={() => setAlertsBarChartExpanded(!alertsBarChartExpanded)}
+              >
+                <div className="flex items-center gap-2">
+                  <svg 
+                    className={`w-4 h-4 text-text-disabled-euicolordisabledtext transition-transform duration-200 ${
+                      alertsBarChartExpanded ? 'rotate-0' : '-rotate-90'
+                    }`} 
+                    viewBox="0 0 16 16" 
+                    fill="currentColor"
+                  >
+                    <path d="M8 12L3 7L4.5 5.5L8 9L11.5 5.5L13 7L8 12Z"/>
+                  </svg>
+                  <h3 className="text-panelplain font-medium text-sm">Alerts</h3>
+                </div>
+                <button className="text-[#0071c2] text-sm hover:underline">
+                  Show alerts
+                </button>
+              </div>
+
+              {/* Collapsible Content */}
+              {alertsBarChartExpanded && (
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h4 className="text-panelplain font-medium text-lg">Statistics</h4>
+                    <div className="flex items-center gap-6">
+                      {/* Legend */}
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 bg-[#0071c2] rounded-sm"></div>
+                          <span className="text-sm text-panelplain">Income</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 bg-[#ff8c42] rounded-sm"></div>
+                          <span className="text-sm text-panelplain">Expense</span>
+                        </div>
+                      </div>
+                      {/* Date Picker */}
+                      <div className="flex items-center gap-2 bg-[#1a1d23] border border-[#404040] rounded px-3 py-1">
+                        <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M3 2V14H13V12H5V2H3ZM7 6V10H9V6H7ZM11 4V10H13V4H11Z"/>
+                        </svg>
+                        <span className="text-sm text-panelplain">14 Aug - 29 Aug</span>
+                        <svg className="w-4 h-4 text-text-disabled-euicolordisabledtext" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M4 6L8 10L12 6H4Z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bar Chart Container - Auto-fit width */}
+                  <div className="relative w-full h-80 bg-[#1a1d23] rounded-lg overflow-hidden">
+                    <svg 
+                      className="absolute inset-0 w-full h-full" 
+                      viewBox="0 0 1000 320" 
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      {/* Background */}
+                      <rect width="1000" height="320" fill="#1a1d23" />
+                      
+                      {/* Grid lines - horizontal */}
+                      <g stroke="#404040" strokeWidth="1" opacity="0.3">
+                        {[60, 120, 180, 240, 280].map((y, i) => (
+                          <line key={i} x1="80" y1={y} x2="920" y2={y} />
+                        ))}
+                      </g>
+
+                      {/* Y-axis labels */}
+                      <g fill="#666" fontSize="12" textAnchor="end">
+                        <text x="75" y="65">500</text>
+                        <text x="75" y="125">400</text>
+                        <text x="75" y="185">300</text>
+                        <text x="75" y="245">200</text>
+                        <text x="75" y="285">0</text>
+                      </g>
+
+                      {/* Bar Chart Data */}
+                      {barChartData.map((data, i) => {
+                        const x = 120 + (i * 90);
+                        const incomeHeight = (data.income / 500) * 220;
+                        const expenseHeight = (data.expense / 500) * 220;
+                        const barWidth = 30;
+                        
+                        return (
+                          <g key={i}>
+                            {/* Income bar (blue) */}
+                            <rect
+                              x={x - 15}
+                              y={280 - incomeHeight}
+                              width={barWidth}
+                              height={incomeHeight}
+                              fill="#0071c2"
+                              rx="2"
+                            />
+                            {/* Expense bar (orange) */}
+                            <rect
+                              x={x - 15}
+                              y={280 - incomeHeight - expenseHeight}
+                              width={barWidth}
+                              height={expenseHeight}
+                              fill="#ff8c42"
+                              rx="2"
+                            />
+                          </g>
+                        );
+                      })}
+
+                      {/* Tooltip on day 16 */}
+                      <g>
+                        <rect 
+                          x="240" 
+                          y="80" 
+                          width="120" 
+                          height="60" 
+                          fill="#2a2d35" 
+                          rx="4" 
+                          stroke="#404040" 
+                          strokeWidth="1" 
+                        />
+                        
+                        <text x="300" y="98" fill="#0071c2" fontSize="14" textAnchor="middle" fontWeight="bold">2,500</text>
+                        <text x="300" y="115" fill="#ff8c42" fontSize="14" textAnchor="middle" fontWeight="bold">1,200</text>
+                        <text x="300" y="130" fill="#666" fontSize="12" textAnchor="middle">23 August, 2021</text>
+                      </g>
+
+                      {/* X-axis labels */}
+                      <g fill="#666" fontSize="12" textAnchor="middle">
+                        {barChartData.map((data, i) => (
+                          <text key={i} x={120 + (i * 90)} y="305">{data.day}</text>
+                        ))}
+                      </g>
+                    </svg>
                   </div>
                 </div>
               )}
