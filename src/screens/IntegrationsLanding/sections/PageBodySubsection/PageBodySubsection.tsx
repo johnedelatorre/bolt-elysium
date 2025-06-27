@@ -10,9 +10,10 @@ import { LineChart } from "../../../../components/charts/LineChart";
 import { BarChart } from "../../../../components/charts/BarChart";
 
 export const PageBodySubsection = (): JSX.Element => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(['All Categories']);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showInstalled, setShowInstalled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Checkbox functionality for alerts breakdown
   const [selectedAlerts, setSelectedAlerts] = useState<number[]>([0, 1, 2]); // Initially select first 3
@@ -20,30 +21,30 @@ export const PageBodySubsection = (): JSX.Element => {
 
   // Integration categories with counts - matching the design exactly
   const categories = [
-    { name: "All Categories", count: 300 },
-    { name: "AWS", count: 50 },
-    { name: "Azure", count: 5 },
-    { name: "Cloud", count: 8 },
-    { name: "Communications", count: 100 },
-    { name: "Config Management", count: 111 },
-    { name: "Containers", count: 45 },
-    { name: "CRM", count: 100 },
-    { name: "Database", count: 234 },
-    { name: "Elastic Stack", count: 234 },
-    { name: "Enterprise Search", count: 234 },
-    { name: "File Storage", count: 234 },
-    { name: "Geo", count: 234 },
-    { name: "Google Cloud", count: 234 },
-    { name: "Infrastructure", count: 234 },
-    { name: "Kubernetes", count: 234 },
-    { name: "Language Client", count: 234 },
-    { name: "Message Broker", count: 234 },
-    { name: "Microsoft 365", count: 234 },
-    { name: "Monitoring", count: 234 },
-    { name: "Operating Systems", count: 234 },
-    { name: "Threat Intelligence", count: 234 },
-    { name: "Upload a File", count: 234 },
-    { name: "Web Server", count: 234 },
+    { name: "All Categories", count: 300, selected: true },
+    { name: "AWS", count: 50, selected: false },
+    { name: "Azure", count: 5, selected: false },
+    { name: "Cloud", count: 8, selected: false },
+    { name: "Communications", count: 100, selected: false },
+    { name: "Config Management", count: 111, selected: false },
+    { name: "Containers", count: 45, selected: false },
+    { name: "CRM", count: 100, selected: false },
+    { name: "Database", count: 234, selected: false },
+    { name: "Elastic Stack", count: 234, selected: false },
+    { name: "Enterprise Search", count: 234, selected: false },
+    { name: "File Storage", count: 234, selected: false },
+    { name: "Geo", count: 234, selected: false },
+    { name: "Google Cloud", count: 234, selected: false },
+    { name: "Infrastructure", count: 234, selected: false },
+    { name: "Kubernetes", count: 234, selected: false },
+    { name: "Language Client", count: 234, selected: false },
+    { name: "Message Broker", count: 234, selected: false },
+    { name: "Microsoft 365", count: 234, selected: false },
+    { name: "Monitoring", count: 234, selected: false },
+    { name: "Operating Systems", count: 234, selected: false },
+    { name: "Threat Intelligence", count: 234, selected: false },
+    { name: "Upload a File", count: 234, selected: false },
+    { name: "Web Server", count: 234, selected: false },
   ];
 
   // Featured integrations at the top
@@ -77,16 +78,15 @@ export const PageBodySubsection = (): JSX.Element => {
   // Regular integration cards - matching the design pattern
   const integrations = Array.from({ length: 24 }, (_, i) => {
     const patterns = [
-      { name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent." },
-      { name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent." },
-      { name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent." },
+      { name: "AWS EC2", icon: "🔶", category: "AWS", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5 },
+      { name: "Amazon Cloud", icon: "☁️", category: "Cloud", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5 },
+      { name: "Microsoft", icon: "🪟", category: "Microsoft 365", description: "Collect logs from 1Password with Elastic Agent.", installCount: 5 },
     ];
     const pattern = patterns[i % 3];
     return {
       id: i + 4,
       ...pattern,
       installed: true,
-      installCount: 5,
     };
   });
 
@@ -227,7 +227,7 @@ export const PageBodySubsection = (): JSX.Element => {
             <TabsContent value="browse" className="mt-6">
               <div className="flex gap-6">
                 {/* Left Sidebar - Categories */}
-                <div className="w-72 flex-shrink-0">
+                <div className="w-80 flex-shrink-0">
                   <div className="space-y-4">
                     {/* Search */}
                     <div className="relative">
@@ -237,25 +237,27 @@ export const PageBodySubsection = (): JSX.Element => {
                       <input
                         type="text"
                         placeholder="Search Dashboards"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-10 pr-4 py-2 bg-[#2a2d35] border border-[#404040] rounded-md text-coreempty-euicoloremptyshade placeholder-text-subdued-euitextsubduedcolor focus:outline-none focus:ring-2 focus:ring-textprimary-euicolorprimarytext focus:border-transparent"
                       />
                     </div>
 
                     {/* Categories List */}
-                    <div className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg">
-                      <ScrollArea className="h-96">
-                        <div className="p-4 space-y-1">
+                    <div className="bg-[#1d1e24] border border-[#2a2d35] rounded-lg overflow-hidden">
+                      <ScrollArea className="h-[600px]">
+                        <div className="p-0">
                           {categories.map((category, index) => (
                             <div
                               key={category.name}
-                              className={`flex items-center justify-between py-2 px-2 hover:bg-[#2a2d35] rounded cursor-pointer transition-colors duration-200 ${
-                                index === 0 ? 'bg-[#2a2d35] text-textprimary-euicolorprimarytext' : ''
+                              className={`flex items-center justify-between py-3 px-4 hover:bg-[#2a2d35] cursor-pointer transition-colors duration-200 border-b border-[#2a2d35] last:border-b-0 ${
+                                category.name === 'All Categories' ? 'bg-[#2a2d35] text-textprimary-euicolorprimarytext' : ''
                               }`}
                             >
-                              <span className={`text-sm ${index === 0 ? 'text-textprimary-euicolorprimarytext font-medium' : 'text-coreempty-euicoloremptyshade'}`}>
+                              <span className={`text-sm ${category.name === 'All Categories' ? 'text-textprimary-euicolorprimarytext font-medium' : 'text-coreempty-euicoloremptyshade'}`}>
                                 {category.name}
                               </span>
-                              <Badge variant="secondary" className="bg-[#404040] text-coreempty-euicoloremptyshade text-xs border-0">
+                              <Badge variant="secondary" className="bg-[#404040] text-coreempty-euicoloremptyshade text-xs border-0 px-2 py-1 rounded-full">
                                 {category.count}
                               </Badge>
                             </div>
@@ -302,6 +304,7 @@ export const PageBodySubsection = (): JSX.Element => {
                           </svg>
                         </Button>
                       </div>
+                      <span className="text-sm text-coreempty-euicoloremptyshade">Grid View</span>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
@@ -319,7 +322,7 @@ export const PageBodySubsection = (): JSX.Element => {
                   </div>
 
                   {/* Featured Integration Cards */}
-                  <div className="grid grid-cols-3 gap-4 mb-8">
+                  <div className="grid grid-cols-3 gap-6 mb-8">
                     {featuredIntegrations.map((integration) => (
                       <div
                         key={integration.id}
@@ -388,11 +391,11 @@ export const PageBodySubsection = (): JSX.Element => {
                   </div>
 
                   {/* Bottom Legend */}
-                  <div className="mt-8 text-center">
+                  <div className="mt-8 pt-6 border-t border-[#2a2d35]">
                     <p className="text-text-subdued-euitextsubduedcolor text-sm mb-4">
-                      If an integration is available for <span className="text-textprimary-euicolorprimarytext">show:</span>
+                      If an integration is available for <span className="text-textprimary-euicolorprimarytext font-medium">show:</span>
                     </p>
-                    <div className="flex items-center justify-center gap-6 text-sm">
+                    <div className="flex items-center gap-8 text-sm">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-coresuccess-euicolorsuccess rounded-full"></div>
                         <span className="text-coreempty-euicoloremptyshade">Recommended</span>
