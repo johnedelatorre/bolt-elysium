@@ -100,7 +100,7 @@ export const PageSideNavSubsection = (): JSX.Element => {
         flex flex-col bg-[#1d1e24] text-coreempty-euicoloremptyshade
         transition-all duration-300 ease-in-out
         ${isCollapsed ? 'w-16' : 'w-64'}
-        relative h-screen
+        relative h-screen border-r border-[#303030]
       `}
       role="navigation"
       aria-label="Main navigation"
