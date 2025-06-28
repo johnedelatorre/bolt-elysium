@@ -1,5 +1,5 @@
 import React from "react";
-import { PageBodySubsection } from "./sections/PageBodySubsection/PageBodySubsection";
+import { PageBodySubsection } from "./sections/PageBodySubsection";
 import { PageSideNavSubsection } from "./sections/PageSideNavSubsection";
 
 export const IntegrationsLanding = (): JSX.Element => {
